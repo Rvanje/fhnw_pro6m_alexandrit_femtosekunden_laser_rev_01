@@ -1,0 +1,60 @@
+\begin{appendix} %Anhang
+\section{Ein Anhang}
+
+
+\subsection{Aufgabenstellung im Originalwortlaut}
+
+
+\subsection{Gesamtübersicht}
+
+
+\subsection{Berechnungen}
+
+\subsection{Berechnung der Leistung der Energieversorgung}
+\begin{equation}
+P_{GES} = 2*P_{TEC}+P_{RPI}+P_{LDD}+P_{VENT} = 2*8W+12W+45W+1.06W \approx 80W
+    \label{formula:_calculation_sp_power}
+\end{equation}
+
+\subsection{Beschreibung der Drittanbieter-Bibliotheken für die Programmierung}
+- Pandas
+- Numpy
+
+\label{section:_libraries_py}
+\subsection{Tests}
+
+\subsection{Weitere Themen}
+% \subsubsection{Producer - Consumer - Design Pattern}
+% Das Producer-Consumer-Designmuster ist ein häufig verwendetes Muster in der Softwareentwicklung, insbesondere bei Multithreading- oder Multitasking-Anwendungen, bei denen ein Teil des Codes Daten produziert und ein anderer Teil diese Daten konsumiert.
+% 
+% Hier ist eine grundlegende Erklärung, wie das Muster funktioniert:
+% 
+% 1. **Producer (Erzeuger)**:
+%    - Der Producer ist für die Erzeugung von Daten verantwortlich. Diese Daten können verschiedene Formen annehmen, wie z.B. Benutzereingaben, Nachrichten aus einer Netzwerkverbindung, generierte Inhalte usw.
+%    - Der Producer fügt die erzeugten Daten in eine gemeinsame Datenstruktur ein, die als Puffer oder Queue bezeichnet wird. Dies ermöglicht es, die Daten zwischen dem Producer und dem Consumer zu übertragen.
+%    
+% 2. **Consumer (Verbraucher)**:
+%    - Der Consumer ist für die Verarbeitung der erzeugten Daten verantwortlich. Dies kann das Analysieren, Weiterleiten, Speichern oder jede andere Art von Verarbeitung umfassen, die je nach Anwendungsfall erforderlich ist.
+%    - Der Consumer liest die Daten aus dem gemeinsamen Puffer oder der Queue und verarbeitet sie entsprechend.
+% 
+% 3. **Buffer (Puffer)**:
+%    - Der Puffer oder die Queue dient als gemeinsamer Speicherbereich zwischen dem Producer und dem Consumer. Es ermöglicht eine asynchrone Kommunikation zwischen den beiden Teilen des Systems.
+%    - Der Puffer kann in verschiedenen Formen implementiert werden, wie z.B. einem Array, einer Liste oder einer speziellen Datenstruktur, die für den Zweck der Multithreading-Kommunikation optimiert ist.
+%    
+% 4. **Kommunikation und Synchronisation**:
+%    - Da der Producer und der Consumer möglicherweise unterschiedliche Geschwindigkeiten haben oder asynchron arbeiten, ist eine angemessene Synchronisation wichtig, um sicherzustellen, dass der Producer Daten in den Puffer einfügt, bevor der Consumer versucht, Daten daraus zu lesen.
+%    - Dies wird normalerweise durch Mechanismen wie Semaphoren, Mutexe (gegenseitiger Ausschluss) oder spezielle synchronisierte Datenstrukturen erreicht, die eine sichere Kommunikation zwischen den Threads oder Prozessen ermöglichen.
+% 
+% Zusammenfassend lässt sich sagen, dass das Producer-Consumer-Muster die Aufgaben der Datenproduktion und -verarbeitung klar trennt und eine effiziente, synchronisierte Kommunikation zwischen den beiden ermöglicht. Dies führt oft zu besser strukturiertem und leichter wartbarem Code, insbesondere in Umgebungen mit paralleler Ausführung.
+% 
+%\includepdf[pages={1-2},nup=1x2,landscape=true,scale=0.85,offset=10 -40,pagecommand={\section{Eingefügtes Dokument; zwei Seiten auf einer}\label{app:Aufgabenstellung}\thispagestyle{myheadings}}]{appendix/aufgabenstellung.pdf} \newpage
+
+%%Bei mehrseitigen Dokumenten die folgenden Seiten ohne Überschrift:
+%\includepdf[pages={3-6},nup=1x2,landscape=true,scale=0.85,offset=10 -40,pagecommand={\thispagestyle{myheadings}}]{appendix/aufgabenstellung.pdf} \newpage
+
+%\includepdf[pages={1},nup=1x1,landscape=true,scale=0.85,offset=10 -40,pagecommand={\section{Eingefügte PDF-Tabelle}\label{app:Timetable}\thispagestyle{myheadings}}]{appendix/timeline_example.pdf} \newpage
+
+%%Bei mehrseitigen Dokumenten die folgenden Seiten ohne Überschrift:
+%\includepdf[pages={2-5},nup=1x1,landscape=true,scale=0.85,offset=0 -20,pagecommand={\thispagestyle{myheadings}}]{appendix/timeline_example.pdf} \newpage
+
+\end{appendix}

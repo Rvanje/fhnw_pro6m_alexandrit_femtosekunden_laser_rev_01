@@ -1,0 +1,87 @@
+\documentclass[final]{fhnwreport}         %[mode] = draft or final
+\input{fhnwheader}                        %loads all packages, definitions and settings	
+
+%%%%% Bibliographie entweder im IEEE- oder im APA-Stil:
+\usepackage[style=ieee,urldate=comp,backend=biber]{biblatex}
+% \usepackage[style=apa,urldate=comp,backend=biber]{biblatex}
+%%%%%
+\addbibresource{literature/beispiel_bib.bib}
+											
+\title{Steuerung für den Alexandrit-Femtosekunden Laser}  %Project Title
+\author{P6 Arbeit oder Bachelor Thesis}    %Document Type => Technical Report, ...
+\date{Windisch, März 2024}               %Place and Date
+
+\begin{document}
+
+\pagenumbering{roman}	
+
+%%---TITLEPAGE---------------------------------------------------------------------------
+\selectlanguage{ngerman}                  %ngerman or english
+\maketitle
+
+\vfill
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=\linewidth]{98_images/IMG_5440.JPG}
+\end{figure}
+
+\vfill
+
+\begin{tabular}{@{}p{5cm} l}
+Student&            Leroy Harreh\\
+Experte&            Bojan Resan\\[2ex]
+Ansprechpartner&    Tobias Grätzer\\[2ex]
+Auftraggeber&       Roger Wüst\\[2ex]
+
+\multicolumn{2}{@{}l}{Fachhochschule Nordwestschweiz, Hochschule für Technik}
+\end{tabular}
+
+\vspace*{4ex}
+% Beispiel für Logo Industriepartner
+% \begin{tikzpicture}[remember picture,overlay,every node/.style={anchor=north east}]
+  %\node at (current page.north east) [xshift=-1cm, yshift=-0.5cm] {\includegraphics[width=4cm]{stoica-ionela-CoNsEK5iHug-unsplash.png}};
+  % Photo by Stoica Ionela on Unsplash
+% \end{tikzpicture}
+
+\clearpage
+			
+%%---ABSTRACT----------------------------------------------------------------------------
+\selectlanguage{ngerman}				%ngerman or english
+\thispagestyle{empty}
+\include{sections/abstract}
+
+%%---TABLE OF CONTENTS-------------------------------------------------------------------	
+\selectlanguage{ngerman}				%ngerman or english
+\tableofcontents
+\clearpage
+
+\listoffigures
+\listoftables
+\cleardoublepage
+
+%%---TEXT--------------------------------------------------------------------------------
+\pagenumbering{arabic}
+\include{sections/abkuerzungsverzeichnis}
+\include{sections/einleitung}
+\include{sections/grundlagen}
+\include{sections/hardware}
+\include{sections/software}
+\include{sections/testaufbau}
+\include{sections/schluss}
+
+%%---BIBLIOGRAPHY------------------------------------------------------------------------
+{\sloppypar
+\printbibliography[heading=bibintoc, title=Quellenverzeichnis]
+}
+
+%%---APPENDIX----------------------------------------------------------------------------
+\include{sections/ehrlichkeit}
+\include{sections/appendix}
+
+%%---NOTES for DEBUG---------------------------------------------------------------------
+%\newpage
+%\listoftodos[\section{Todo-Notes}]
+%\clearpage
+
+\end{document}

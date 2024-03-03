@@ -1,0 +1,61 @@
+%%---Main Packages-----------------------------------------------------------------------
+\usepackage[english, ngerman]{babel}	%Mul­tilin­gual sup­port for LaTeX
+\usepackage[T1]{fontenc}				      %Stan­dard pack­age for se­lect­ing font en­cod­ings
+\usepackage[utf8]{inputenc}				  %Ac­cept dif­fer­ent in­put en­cod­ings
+\usepackage{lmodern}                 %The newer Font-Set
+\usepackage{textcomp}					      %LaTeX sup­port for the Text Com­pan­ion fonts
+\usepackage{graphicx} 					      %En­hanced sup­port for graph­ics
+\usepackage{float}						        %Im­proved in­ter­face for float­ing ob­jects
+%\usepackage{ifdraft}                %Let you check if the doc is in draft mode
+
+%%---Useful Packages---------------------------------------------------------------------
+\usepackage[pdftex,dvipsnames,tables]{xcolor}  %Driver-in­de­pen­dent color ex­ten­sions for LaTeX
+\usepackage{csquotes}                %Simpler quoting with \enquote{}
+\usepackage{siunitx} 					      %A com­pre­hen­sive (SI) units pack­age
+\usepackage{listings}					      %Type­set source code list­ings us­ing LaTeX
+\usepackage[bottom]{footmisc}			  %A range of foot­note op­tions
+\usepackage{footnote}					      %Im­prove on LaTeX's foot­note han­dling
+\usepackage{verbatim}					      %Reim­ple­men­ta­tion of and ex­ten­sions to LaTeX ver­ba­tim
+\usepackage[textsize=footnotesize]{todonotes} %Mark­ing things to do in a LaTeX doc­u­ment
+\usepackage{lipsum}              % Gives you access to blindtext
+
+%%---Tikz Packages-----------------------------------------------------------------------
+%\usepackage{standalone}
+%\usepackage{tikz}
+%\usepackage{circuitikz}
+%\usetikzlibrary{arrows}
+%\usetikzlibrary{calc}
+%\usetikzlibrary{intersections}
+
+%%---Math Packages-----------------------------------------------------------------------
+\usepackage{amsmath}					    %AMS math­e­mat­i­cal fa­cil­i­ties for LaTeX
+%\usepackage{amssymb}					  %Type­set­ting symbols (AMS style)
+%\usepackage{array}						  %Ex­tend­ing the ar­ray and tab­u­lar en­vi­ron­ments
+%\usepackage{amsthm}					    %Type­set­ting the­o­rems (AMS style)
+
+%%---Table Packages----------------------------------------------------------------------
+\usepackage{tabularx}					  %Tab­u­lars with ad­justable-width columns
+%\usepackage{longtable}
+\usepackage{multirow}					  %Create tab­u­lar cells span­ning mul­ti­ple rows
+\usepackage{multicol}					  %In­ter­mix sin­gle and mul­ti­ple columns
+
+%%---PDF / Figure Packages---------------------------------------------------------------
+\usepackage{pdfpages}					  %In­clude PDF doc­u­ments in LaTeX
+\usepackage{pdflscape}					  %Make land­scape pages dis­play as land­scape
+%\usepackage{subfig}					    %Fig­ures di­vided into sub­fig­ures
+
+%%---Other Packages----------------------------------------------------------------------
+%\usepackage{xargs}              %De­fine com­mands with many op­tional ar­gu­ments
+
+
+%%---Main Settings-----------------------------------------------------------------------
+\graphicspath{{./graphics/}}			%Defines the graphicspath
+%\geometry{twoside=false}				%twoside=false disables the "bookstyle"
+\setlength{\marginparwidth}{2cm}
+\overfullrule=5em						    %Creates a black rule if text goes over the margins => debugging
+
+%%---User Definitions--------------------------------------------------------------------
+%%Tabel-Definitions: (requires \usepackage{tabularx})
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}    %column-width and alignment
+\newcolumntype{C}[1]{>{\centering\arraybackslash}p{#1}}
+\newcolumntype{R}[1]{>{\raggedleft\arraybackslash}p{#1}}					
