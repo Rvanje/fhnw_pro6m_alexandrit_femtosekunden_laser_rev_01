@@ -1,32 +1,18 @@
 \section{Software}
-Beschrieb was die Software machen soll und wie sie es machen soll!
-Die Software soll die Stabilisierung der Temperaturen der Pumpdiode und des Kristall. 
+% Beschreibe wie die Agile Softwareentwicklung in diesem Projekt verwendet wurde
+Die Software wurde mit einer teils Agilen Software Entwicklungsmethode realisiert. 
+Beschrieb was die Software machen soll und wie sie es machen soll und wie dies erreicht wurde, wie wurde die Software unterhalten und wie kam es überhaupt zur programmeirsprache pyhton?
+Die Software soll die Stabilisierung der Temperaturen der Pumpdiode und des Kristall.
 Um die Versionierung der Softwarekomponenten aufrecht zu erhalten, wurde die Software \textit{Git} verwendet.
+
+Zusätzlich konnte für dieses Projekt Open-Source-Software, also frei zugängliche Software genutzt werden. So wurde eine API von Meerstetter Engineering für die Kommunikation mit dem TEC-Kontroller verwendet.
 
 \subsection{Softwarespezifikation}
 Analyse der Anforderungen, hier werden die verlangten Funktionen des Systems verstanden und Definiert. Für diese Software wurde eine inkrementeller Aufbau des Systems gewählt. So können im Nachhinein Anpassungen einfacher eingepflegt werden. $[6; S. 64-73]$
 
-% \subsection{Softwareprototyp}
-% \begin{enumerate}
-%     \item Durchführbarkeitsstudie
-%     \item Erhebung und Analyse der Anforderungen
-%     \item Spezifikation der Anforderungen --> Als Liste realisieren(?)
-
-%     \item Validierung der Anforderungen (Testen)
-% \end{enumerate}
-% 
-% \begin{enumerate}
-%     \item Entwickler- und Komponententests
-%     \item Systemtests
-%     \item Abnahmetests
-% \end{enumerate}
-
-% \subsection{Durchführbarkeitsstudie}
-% Ein funktionierender Prototyp wurde bereits erstellt und die Daten konnten gelesen werden. Auch Befehle können an den Kontroller gesendet werden. Dies gewährleistet das senden der PID parameter, um den gewünschten Arbeitspunkt fest zu legen.
-
 \subsection{Software Architektur}
 % Hinweise auf die Objektorientierung der Software.
-In diesem Kapitel wird die Architektur der Software beschrieben. Auf Grund der Wiederverwendbarkeit und der Übersicht des Programms wurde die Software möglichst modular aufgebaut. Sämtliche Teile der Software wurden in funktionelle Komponente unterteilt. Es wird zwischen dem Backend und dem Frontend unterschieden, wobei beide wiederum in kleinere Komponente unterteilt werden. Ebenfalls zur Übersicht wurde das Programm in einige Unterprogramme aufgeteilt. So wird sowohl die Ausführung des GUI und die Auswertung der Daten der TECs, als auch die Steuerung des Diodentreibers und die Ansteuerung des TEC-Treibers in jeweils eigenen Unterprogrammen ausgewertet.\\
+In diesem Kapitel wird die Architektur der Software beschrieben. Auf Grund der Wiederverwendbarkeit und der Übersicht des Programms wurde die Software möglichst modular aufgebaut. Sämtliche Teile der Software wurden in funktionelle Komponente unterteilt. Es wird zwischen dem Backend und dem Frontend unterschieden, wobei beide wiederum in kleinere Komponente unterteilt werden. Ebenfalls zur Übersicht wurde das Programm in einige Unterprogramme aufgeteilt. So wird sowohl die Ausführung des GUI und die Auswertung der Daten der TECs, als auch die Steuerung des Diodentreibers und die Ansteuerung des TEC-Treibers in jeweils eigenen Unterprogrammen ausgewertet. Für die parallelen Abläufe im Programm wurde die Methode \textit{Threading} verwendet.
 Für die Sicherheit der bedienenden Person und der Komponenten des Laseraufbaus selber, mussten gewisse Sicherheitsvorkehrungen getroffen werden. Für das Einschalten der Diode, muss ein Schieber betätigt werden, ohne welchen die Freigabe zum Start des Diodentreibers nicht gewährleistet wird. Zusätzlich dürfen die TECs nicht mit zu viel Leistung betrieben werden, was zu deren Zerstörung führen könnte und dies auch die Diode in Mitleidenschaft ziehen könnte. Andererseits, muss verhindert werden, dass der der Diodentreiber zu viel Strom in den Laser einspeist. Die meisten dieser Vorkehrungen sind im Programmcodes untergebracht, andere mussten in der mitgelieferten Software der Komponenten eingestellt werden.
 
 \subsection{Systemkontextmodell}
@@ -34,7 +20,7 @@ Das Systemkontextmodell beschreibt die anderen Systeme in der Umgebung und die S
 
 \begin{figure}
     \centering
-    \includegraphics{98_images/scheme_wiring.PNG}
+    \includegraphics[scale=0.1]{98_images/systemkontextmodell.jpg}
     \caption{Das Systemkontextmodell}
     \label{fig:systemkontextmodell}
 \end{figure}
@@ -44,25 +30,25 @@ Das Interaktionsmodell zeigt auf, wie das System während der Benutzung mit sein
 
 \begin{figure}
     \centering
-    \includegraphics{98_images/scheme_wiring.PNG}
+    \includegraphics[scale=0.1]{98_images/interaktionsmodell.jpg}
     \caption{Das Interaktionsmodell}
     \label{fig:interaktionsmodell}
 \end{figure}
 
 \subsection{Datenorientierte Modellierung}
-Die Datenorientierte Modellierung wurde verwendet, um den gesamten Datenfluss im Kontroller fest zu halten. Der Datenfluss im Kontroller ist in Abbildung \ref{fig:dataflow_1} und in Abbildung \ref{fig:dataflow_2} gezeigt. $[6]$ S.170
+Die Datenorientierte Modellierung wurde verwendet, um den gesamten Datenfluss im Kontroller fest zu halten. Der Datenfluss im Kontroller ist in Abbildung \ref{fig:dataflow_1} und in Abbildung \ref{fig:dataflow_2} gezeigt. Der Datenfluss der Daten, die im Backend erzeugt werden, werden im Frontend dargestellt. Zu sehen ist die Queue, in die die Daten zuerst geschrieben werden und erst von da von den Konsumenten bezogen werden. Eine Abzweigung geht in die Datenbank im Hintergrund. Aus Gründen der Handlichkeit, wurde das Datenformat .csv verwendet. Dies ist mit weitverbreiteten Drittanbietersoftware wie Excel von Microsoft kompatibel und kann mit einer Grösse von über einer Million Zeilen eingelesen werden. Zusätzlich ist beim einfachen öffnen der Datei die Zeichensetzung für Menschen lesbar. In der Abbildung \ref{fig:dataflow_2} ist der Datenfluss der Daten, die im Frontend erzeugt werden und ins Backend gesendet werden dargestellt. Die Daten werden direkt und ohne in eine Queue geschrieben zu werden ins Backend und dann an den TEC-Treiber und den Diodentreiber weiter gereicht. Das Weiterleiten der Daten an die Treiber im Backend wird vom Rechner an die angedachten Treiber weitergeleitet. $[6]$  % S.170
 
 \begin{figure}
     \centering
-    \includegraphics{98_images/data_flow_backend_frontend_tec_ldd.PNG}
-    \caption{Hier ist der Datenfluss der Daten, die im Backend erzeugt werden ins Frontend dargestellt. Zu sehen ist die Queue, in die die Daten erst geschrieben werden und erst von den Konsumenten von da bezogen. Eine Abzweigung geht in die Datenbank im Hintergrund. Aus Gründen der Handlichkeit, wurde das Datenformat .csv verwendet. Dies ist mit weitverbreiteten Drittanbietersoftware wie Excel von Microsoft kompatibel und kann mit einer Grösse von über einer Million Zeilen eingelesen werden. Zusätzlich ist beim einfachen öffnen der Datei die Zeichensetzung für Menschen lesbar. }
+    \includegraphics[scale=0.3]{98_images/data_flow_backend_frontend_tec_ldd.PNG}
+    \caption{Die datenorientierte Modellierung; Die Daten fliessen vom Backend zum Frontend.}
     \label{fig:dataflow_1}
 \end{figure}
 
 \begin{figure}
     \centering
-    \includegraphics{98_images/data_flow_frontend_backend_tec_ldd.PNG}
-    \caption{Hier ist der Datenfluss der Daten, die im Frontend erzeugt werden ins Backend dargestellt. Die Daten werden direkt und ohne in eine Queue geschrieben zu werden ins Backend und dann an die Kontroller (TEC-Treiber und Diodentreiber) weiter gereicht.}
+    \includegraphics[scale=0.3]{98_images/data_flow_frontend_backend_tec_ldd.PNG}
+    \caption{Die datenorientierte Modellierung; Die Daten fliessen vom Frontend zum Backend.}
     \label{fig:dataflow_2}
 \end{figure}
 
@@ -73,7 +59,7 @@ Die Bereitstellung der Daten der TECs und des Diodentreibers sind nach dem \text
 \begin{figure}[H]
     \centering
     \includegraphics[scale=0.3]{98_images/producer_consumer_design_pattern.PNG}
-    \caption{"Producer-Consumer" - Design Pattern; Der Datenproduzent fördert Informationen in die Queue, welche der Konsument bezieht.}
+    \caption{\textit{Producer-Consumer}-Design Pattern; Der Datenproduzent fördert Informationen in die Queue, welche der Konsument bezieht.}
     \label{fig:_producer_consumer}
  \end{figure}
 
@@ -87,13 +73,12 @@ Das graphische Benutzeroberfläche soll alle benötigten und wichtigen Werte anz
 
 \textbf{Evaluierung des Frameworks}
 Für die Realisierung der Benutzeroberfläche musste das Framework evaluiert werden, mit der die Benutzeroberfläche programmiert werden soll. Dafür werden die Frameworks \textit{Flask}, \textit{Tkinter} oder \textit{Customtkinter} eine Erweiterung von \textit{Tkinter} der Programmiersprache Python benutzt/verwendet. Dazu standen die Optionen Webbasiert (in einem Webbrowser verwaltbar und nutzbar) die andere Option ist eine Applikation. Beide Optionen laufen lokal auf dem Rechner (Raspberry PI 3B+), dabei steht die Leistung des Rechners im Vordergrund. Die vom TEC-Kontroller ausgelesenen Werte, werden im Sekundentakt an den Rechner gesendet und müssen innerhalb einer Sekunde ausgewertet werden können. Die Bedienung darf aus diesem Grund nicht zu viele Ressourcen des Rechners aufwenden. Dies konnte im Programm mit einer \textit{Queue} ein wenig abgefangen werden. Dazu ist es wünschenswert, wenn die Benutzeroberfläche zur einfacheren Handhabung die gesamte Anzeige ausfüllt. Folgend werden die Dafür bzw. Dagegen sprechenden Argumente aufgelistet.
-Neben dem oben genannten Framework wurden auch Bibliotheken von Drittanbietern, die nicht nativ in der Installation von Python vorhanden sind verwendet. Die Beschreibung derer sind in Kapitel \ref{section:_libraries_py}.
-
+Neben dem oben genannten Framework wurden auch Bibliotheken von Drittanbietern, die nicht nativ in der Installation von Python vorhanden sind verwendet. Die Beschreibung derer sind in im Anhang unter dem Kapitel \ref{section:_libraries_py}.
 
 \begin{table}[H]
     \centering
     \begin{tabular}{l|l|l|l}
-        $-$&                        \textbf{Webbasiert}&        \multicolumn{2}{c}{\textbf{Applikation}}\\
+        \multicolumn{1}{c|}{$-$}&   \textbf{Webbasiert}&        \multicolumn{2}{c}{\textbf{Applikation}}\\
         \hline
         \textbf{Kriterium}&         \textbf{Flask}&             \textbf{Tkinter}&           \textbf{Customtkinter}\\
         \hline
@@ -110,8 +95,59 @@ Neben dem oben genannten Framework wurden auch Bibliotheken von Drittanbietern, 
 
 Aus den Gründen der Erfahrung und der Anwendbarkeit mit Tkinter, fiel die Entscheidung auf die App-Variante. Zusätzlich konnte mit dem \textit{Customtkinter} Framework modernere Designs kreiert werden. Dies soll die Nutzung der Oberfläche vereinfachen. Es können ergonomische und ansprechende Designs realisiert werden.
 
-\textbf{Benutzerführung}
-Beschreibung, wie im Menü navigiert wird, Architektur des Menüs. Hier sollen auch die verschiedenen Modi dokumentiert werden. Namentlich "Initialisierung", "Ready", "Eingabe Parameter". Sind die Netzwerk Voraussetzungen gegeben,  kann zusätzlich der Rechner über einen Fernzugriff gesteuert werden. [Annex 2]
+\subsection{Die Anzeigen}
+Die Anzeigen sehen wie in den folgenden Abbildungen \ref{fig:overview_sw} und \ref{fig:settings_sw} gezeigt aus. Die gesamte Anwendung wird im Vollbildschirm-Modus beim hochfahren          des Rechners automatisch gestartet.\\
+Abbildung \ref{fig:overview_sw} zeigt den Startbildschirm der Steuerung. Auf diesem werden alle wichtigen Parameter auf einen Blick angezeigt und können auch da eingestellt werden. Das Design ist in verschiedene Abschnitte unterteilt, um die Benutzerführung zu vereinfachen. So wurden Rahmen um die jeweiligen Steuereinheiten gelegt, damit klar ist wozu ein bestimmtes Element gehört. Die Anzeige ist in die Steuerung der TECs und die Pumpdiodentreiber unterteilt, wobei die beiden TECs wiederum in den TEC des Kristalls und der Pumpdiode unterteilt wurde.\\
+Angezeigt werden die aktuellen Werte, \textit{Acutal Value} der TECs als auch der Strom des Diodentreibers. Bei allen dreien lassen sich die Sollwerte, \textit{Setpoint} der Temperaturen bzw. des Stromes mit den $+$ und $-$ Knöpfen hinter den Sollwerten einstellen.
+Der Schieberegler dient als Barriere zur Sicherheit, dass der Laser nicht bei unbeabsichtigtem Betätigen des Startknopfes für den Laser den Laser startet. Bei Betätigen des \textit{Laser STOP}-Knopfes, kann der Laser zu jeder Zeit beendet werden.
+Gleich darunter befindet sich eine Statusanzeige für den Betrieb des Lasers. Es werden folgende in der Tabelle aufgelistete Texte angezeigt.
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{l|l}
+         \textit{Laser Ready}&  Alle Bedingungen für den Start des Lasers sind erfüllt. Nun muss noch der Schieberegler betätigt werden und der Laser ist in Betrieb.\\
+         \textit{Laser Running}&    Der Laser wurde gestartet und es wird ein Strom am Ausgangs des Diodentreibers gemessen.
+    \end{tabular}
+    \caption{Beschreibung der Texte für die Statusanzeige des Laserbetriebs.}
+    \label{tab:my_label}
+\end{table}
+Auf der Abbildung \ref{fig:settings_sw} sind verschiedene Parameter und Anwendungen angezeigt und die Möglichkeit den Rechner herunter zu fahren und somit die Anwendung zu verlassen.
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{l|l}
+         \textbf{Anwendung}&        \textbf{Beschreibung}\\
+         \hline
+         \textit{Export Data}&      Exportiert die Temperaturen der TECs und die Ströme des Dioden-\\
+         &                          treibers in einer .csv-Datei. Primary-key ist dabei die Zeit,\\
+         &                          alle  Parameter werden somit an Hand der Zeit sortiert.\\
+         CPU Temperatur&            Anzeige für die Temperatur in der CPU des Rechners, diese sollte im\\
+         &                          Bereich 40°C - 65°C sein.\\
+         \textit{Appearance Mode}&  Die gesamte Anzeige kann in einem hellen, als auch in einem dunkleren\\
+         &                          Design erscheinen.\\
+         \textit{Quit}&             Damit wir nur die Anwendung beendet jedoch nicht den gesamten Rech-\\
+         &                          ner heruntergefahren werden.\\
+         \textit{Shut down}&        Bei Betätigung wird der gesamte Rechner herunter gefahren.
+    \end{tabular}
+    \caption{Beschreibung der Bedienung auf der \textit{Settings}-Anzeige}
+    \label{tab:settings_beschriebung_sw}
+\end{table}
+
+% Beschreibung, wie im Menü navigiert wird, Architektur des Menüs. Hier sollen auch die verschiedenen Modi dokumentiert werden.
+
+\begin{figure}
+    \centering
+    \includegraphics[scale=0.3, trim={1mm 1mm 1mm 1mm},clip]{98_images/overview_window_large.PNG}
+    \caption{Die Hauptseite \textit{Overview} der Steuerung}
+    \label{fig:overview_sw}
+\end{figure}
+
+\begin{figure}
+    \centering
+    \includegraphics[scale=0.3, trim={1mm 1mm 1mm 2mm},clip]{98_images/settings_window_large.PNG}
+    \caption{Die Einstellungseite \textit{Settings} der Steuerung}
+    \label{fig:settings_sw}
+\end{figure}
 
 \subsubsection{Kommunikation zwischen Backend - Frontend}
 
@@ -135,33 +171,25 @@ Zur Überprüfung der Funktionalität der Software und der Hardware wurde zuerst
 
 Für den zwei-kanaligen TEC-Kontroller wurde ein Treiber des Unternehmens Meerstetter Engineering AG gewählt. Dieser erfüllte alle Spezifikationen, die für die Funktionalität des Systems benötigt wurden. Daneben kann es die PID-Parameter automatisch wählen und müssen nicht noch im Steuerungsprozess evaluiert werden. Die Zweikanaligkeit des Kontrollers kann simultan das Peltierelement des Kristalls als auch dies der Pumpdiode steuern.
 
-
 \textbf{Romain Caretto's Vorarbeit erwähnen}
 \textbf{Neuster Stand der Technik}
-\textbf{Mit welcher Methode zum Ziel; der letzte Paragraph der Einleitung Inhaltsverzeichnis im Prosa}
-% Und noch schnell die ganze Bibliographie zitieren:
+
 \nocite{*}
 
 % \subsection{Theorie 1}
 % 
 % \emph{Informieren und orientieren.} Das Schema in Abbildung~\ref{fig:software_struktur} enthält \ldots, \lipsum[7-7]
 % 
-% \begin{figure}[b]
-% \begin{center}
-% \includegraphics[width=\linewidth]{software_struktur.png}
-% \end{center}
-% \caption{Realisierte Software-Struktur in LABView}
-% \label{fig:software_struktur}
-% \end{figure}
-% 
-% \subsection{Unterkapitel}
-% 
 % \lipsum[8]  Nach Formel \eqref{eq:sincos}:
 % \begin{equation}
 % \sin \alpha \pm \sin \beta = 2\sin\frac{\alpha\pm\beta}{2}\cos\frac{\alpha\mp\beta}{2}\,. \label{eq:sincos}
 % \end{equation}
-% 
-% \lipsum[9]
-% \begin{equation}
-% x = \frac{-b\pm\sqrt{b^2-4ac}}{2a}\;.
-% \end{equation}
+
+% \subsection{Softwareprototyp}
+% \begin{enumerate}
+%     \item Durchführbarkeitsstudie
+%     \item Erhebung und Analyse der Anforderungen
+%     \item Spezifikation der Anforderungen --> Als Liste realisieren(?)
+
+%     \item Validierung der Anforderungen (Testen)
+% \end{enumerate}
