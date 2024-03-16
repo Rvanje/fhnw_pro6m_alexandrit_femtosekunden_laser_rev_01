@@ -1,9 +1,10 @@
 \section{Software}
+\label{chptr:software}
 % Beschreibe wie die Agile Softwareentwicklung in diesem Projekt verwendet wurde
 Die Software wurde mit der plangesteuerten-agilen Softwareentwicklungsmethode realisiert. 
 %Beschrieb was die Software machen soll und wie sie es machen soll und wie dies erreicht wurde, wie wurde die Software unterhalten und wie kam es überhaupt zur Programmiersprache Python?
 Die Funktion der Software soll es sein, die Stabilisierung der Temperaturen der Pumpdiode und des Kristall zu gewährleisten. Daneben soll auch die Stromzufuhr für den Diodentreiber gesteuert werde können.\\
-Die gesamte Programmierung der Steuerung wurde in der Programmiersprache Python erstellt. Die Rechner der Raspberry PI Serie sind dafür ausgelegt unter anderen hauptsächlich in den Sprachen Python als auch C/C++ programmiert zu werden. Es können Skripte erstellt werden, die direkten Zugriff auf Aus- und Eingänge haben und diese so steuern können.\\
+Die gesamte Programmierung der Steuerung wurde in der Programmiersprache Python erstellt. Die Rechner der Raspberry PI Serie sind dafür ausgelegt unter anderen hauptsächlich in den Sprachen Python als auch C/C++ programmiert zu werden. Es können Skripte erstellt werden, die direkten Zugriff auf Aus- und Eingänge haben und diese so steuern können. Im Rahmen dieser Arbeit wird nicht tiefer auf den Quellcode eingegangen, bei Interesse kann dieser im Anhang unter dem Abschnitt \ref{main_src} nachgelesen werden.\\
 % Um die Versionierung der Softwarekomponenten aufrecht zu erhalten, wurde die Software \textit{Git} verwendet.
 
 % \subsection{Softwarespezifikation}
@@ -63,8 +64,7 @@ Das Interaktionsmodell zeigt auf, wie das System während der Benutzung mit sein
 Die Datenorientierte Modellierung wurde verwendet, um den gesamten Datenfluss im Kontroller fest zu halten. Der Datenfluss im Kontroller ist in Abb. \ref{fig:dataflow_1} und in Abb. \ref{fig:dataflow_2} gezeigt. Der Datenfluss der Daten, die im Backend erzeugt werden, werden im Frontend dargestellt. Zu sehen ist die \textit{Queue}, in die die Daten zuerst geschrieben werden und erst von da von den Konsumenten bezogen werden. Eine Abzweigung geht in die Datenbank im Hintergrund. Aus Gründen der Handlichkeit, wurde das Datenformat .csv verwendet. Dies ist mit weitverbreiteten Drittanbietersoftware wie Excel von Microsoft kompatibel und kann mit einer Grösse von über einer Million Zeilen eingelesen werden. Zusätzlich ist beim einfachen öffnen der Datei die Zeichensetzung für Menschen lesbar. In der Abb. \ref{fig:dataflow_2} ist der Datenfluss der Daten, die im Frontend erzeugt werden und ins Backend transportiert werden dargestellt. Die Daten werden direkt und ohne in eine \textit{Queue} geschrieben zu werden ins Backend und dann an den TEC-Treiber und den Diodentreiber weiter gereicht. Das Weiterleiten der Daten an die Treiber im Backend wird vom Rechner an die angedachten Treiber weitergeleitet. Die beiden Datenströme sind getrennt dargestellt, einmal vom \textit{Backend} ins \textit{Frontend} und umgekehrt. $[6]$\\  % S.170
 Die \textit{Queue} wurde deshalb eingesetzt, um eine bestimmte Datenstruktur zu gewährleisten. Dies ist möglich, weil die Daten gepuffert, also zwischengespeichert werden und nicht verloren gehen, sollte der Rechner einmal beschäftigt sein. Bei der Dateneingabe wird keine \textit{Queue} benötigt, die Eingabedaten sind nicht so dynamisch, wie die produzierten Daten, die Daten gehen nicht verloren.
 
-% Evtl. die Vorteile und vor allem der Grund für die Queue nennen. (Datenorganisation, Synchronisation, Pufferung, Arbeitsspeicher Management, Nachrichtenwarteschlagnen)
-% Warum eine Queue beim Daten Produzieren aber nicht beim einlesen.
+Der \textit{Primary-Key} der .csv-Datei ist als Unix Zeitstempel dargestellt und wurde nicht in eine eine GMT-Zeit umgewandelt. Der Grund dafür ist, dass der Rechner keinen Internetzugang hat und die Zeit grundsätzlich nicht aktualisiert wird. Für die Darstellung der Werte spielt dies keine Rolle, weil die Werte relativ zur Zeit sind. Das Unix-Format jedoch ist in einer Tabelle einfacher zu handhaben, weil diese Werte nummerisch sind. Dazu müssen sie nicht mit Tabellenfunktionen konvertiert werden.\\
 
 \begin{figure}[H]
     \centering
@@ -81,9 +81,15 @@ Die \textit{Queue} wurde deshalb eingesetzt, um eine bestimmte Datenstruktur zu 
 \end{figure}
 
 \subsubsection{Backend}
+\label{chptr:software_backend}
 Das \textit{Backend} umfasst in der Softwareentwicklung alle Programmiertätigkeiten, die die Logik in einer Software ausmachen. So werden Kommunikation zu Kontrollern aufgebaut, Daten in Datenbanken gespeichert und Daten ans Frontend gesendet und auch von da bezogen.
 
-Die Objektorientierung wurde verwendet, wo dies möglich gewesen ist. Für die Erzeugung der Objekte wie Knöpfe, Rahmen oder Texten war dies nicht möglich auch wenn dies optimal gewesen wäre. Die Objekte wurden zwar erstellt, die Werte aktualisierten sich jedoch nicht. Die gesamte Anzeige ist somit in einer Initialisierungs-Funktion realisiert, die Funktion ist vollständig gegeben, dies entspricht jedoch nicht der gängigen guten Softwarepraxis. Die Übersicht bei einer Revision des Quellcodes ist somit erschwert. Ersichtlich ist dies im Quellcode im Anhang im Kapitel \ref{main_src}. 
+Die Objektorientierung wurde verwendet, wo dies möglich gewesen ist. Für die Erzeugung der Objekte wie Knöpfe, Rahmen oder Texten war dies nicht möglich auch wenn dies optimal gewesen wäre. Die Objekte wurden zwar erstellt, die Werte aktualisierten sich jedoch nicht. Die gesamte Anzeige ist somit in einer Initialisierungs-Funktion realisiert, die Funktion ist vollständig gegeben, dies entspricht jedoch nicht der gängigen guten Softwarepraxis. Die Übersicht bei einer Revision des Quellcodes ist somit erschwert. Ersichtlich ist dies im Quellcode im Anhang im Kapitel \ref{main_src}. Zeilen 23 bis 771 sind die Initial-Funktion
+
+Die Ansteuerung des Diodentreibers wurde, wie weiter oben beschrieben mit einem analogen Signal realisiert. Dazu musste auf der SPS ein analoger Ausgang gesteuert werden.
+
+Ansteuerung der TECs? - Über die API von Meerstetter wo bereits erwähnt?
+Schemata sind in Abb. \ref{fig:dataflow_1} und \ref{fig:dataflow_2} gezeigt. Auf den Quellcode wird nicht eingegangen, bei Interesse kann dieser im Anhang unter dem Abschnitt \ref{main_src} nachgelesen werden.
 
 \subsubsection{Frontend}
 Das \textit{Frontend} umfasst alle Bereiche, die mit der Benutzeroberfläche (GUI) zu tun haben. So beinhaltet dies das Framework, mit dem das Design der GUI entwickelt worden ist und deren Benutzerführung. 
@@ -125,7 +131,7 @@ Ersichtlich sind am oberen Rand zwei Schaltflächen, mit denen zwischen den zwei
 
 \begin{figure}[H]
     \centering
-    \includegraphics[scale=0.3, trim={1mm 1mm 1mm 1mm}, clip]{98_images/window_overview_large_02.PNG}
+    \includegraphics[scale=0.3, trim={1mm 1mm 1mm 1mm}, clip]{98_images/window_overview_large_04.PNG}
     \caption{Die Hauptseite \textit{Overview} der Steuerung}
     \label{fig:overview_sw}
 \end{figure}
@@ -185,20 +191,6 @@ Abb. \ref{fig:settings_sw} zeigt verschiedene Parameter und Anwendungen. Um nebe
     \item Kommunikation Raspberry PI - Digitalanzeige
     \item Kommunikation Raspberry PI - TECs
 \end{itemize}
-
-% \subsection{Funktionalitätstest}
-% Erstellen einer Tabelle im Vorhinein, um die Funktionalitäten der Software zu testen.
-% Wie in einem Change Request auf der Testseite.
-
-\subsection{Testen der Software}
-Zur Überprüfung der Funktionalität der Software und der Hardware wurde zuerst ein Test definiert. Dieser Test unterliegt der Anforderungsspezifikation und soll die Erfüllung der Funktion der Software und Hardware gewährleisten.
-
-\begin{itemize}
-    \item Probleme beschreiben und Abgrenzen; Was sind die Ziele für die Software
-    \item Menü für die Handhabung und Einstellungen
-\end{itemize}
-
-Für den zwei-kanaligen TEC-Kontroller wurde ein Treiber des Herstellers Meerstetter Engineering AG gewählt. Dieser erfüllte alle Spezifikationen, die für die Funktionalität des Systems benötigt wurden. Daneben kann es die PID-Parameter automatisch wählen und müssen nicht noch im Steuerungsprozess evaluiert werden. Die Zweikanaligkeit des Kontrollers kann simultan das Peltierelement des Kristalls als auch dies der Pumpdiode steuern.
 
 \textbf{Romain Caretto's Vorarbeit erwähnen}\\
 \textbf{Neuster Stand der Technik}
