@@ -7,8 +7,8 @@ In diesem Kapitel wird die Hardware der Steuerung im Detail erläutert. Es wird 
 % \end{itemize}
 
 \subsection{Raspberry PI}
-Dieser wurde ausgewählt, weil dieser mit sämtlichen industriellen Schnittstellen kompatibel ist. Darunter auch mit der SPS, die im nächsten Kapitel beschrieben ist. Dieser ist die Hauptkomponente und dient als Zentrale für die Evaluierung sämtliche Berechnungen und gibt die Befehle an den TEC-Treiber und an den Diodetreiber und steuert die Digitalanzeige. Der Rechner ist direkt auf der SPS montierbar und benötigt somit weniger Platz im Gehäuse der Steuerung. Die Kommunikation des Rechners zur SPS erfolgt über ein Flachbandkabel. Worüber mit Pythonprogrammen direkt Aus- und Eingänge auf der SPS angesteuert werden können. Somit ist es möglich etliche weitere Komponente anzuschliessen und zu steuern. So auch der Diodentreiber, der im Kapitel \ref{chptr:_diodentreiber} näher beschrieben wird. Der TEC-Treiber kommuniziert direkt über die USB Schnittstelle auf dem Rechner und muss nicht über die SPS gesteuert werden.\\
-Das Betriebssystem des Raspberry PI ist ein Derivat des Linux Betriebssystems. Mit einem Image speziell für einen Raspberry PI, können standardmässig Programme zum Programmieren von Pythonskripten und die Pythoninstallation mit installiert werden. Die weiter oben beschriebenen Standardbibliotheken sind ebenfalls im der Basisinstallation der Pythondistribution enthalten. Die zusätzlichen Bibliotheken von Drittanbietern müssen jedoch noch nach installiert werden. Diese sind im Anhang beschrieben.
+Dieser wurde ausgewählt, weil dieser mit sämtlichen industriellen Schnittstellen kompatibel ist. Darunter auch mit der SPS, die im nächsten Kapitel beschrieben ist. Dieser ist die Hauptkomponente und dient als Zentrale für die Evaluierung sämtlicher Berechnungen und gibt die Befehle an den TEC-Treiber und an den Diodetreiber und steuert die Digitalanzeige. Der Rechner ist direkt auf der SPS montierbar und benötigt somit weniger Platz im Gehäuse der Steuerung. Die Kommunikation des Rechners zur SPS erfolgt über ein Flachbandkabel. Worüber mit Pythonprogrammen direkt Ein- und Ausgänge auf der SPS angesteuert werden können. Somit ist es möglich etliche weitere Komponente anzuschliessen und zu steuern. So auch der Diodentreiber, der im Kapitel \ref{chptr:_diodentreiber} näher beschrieben wird. Der TEC-Treiber kommuniziert direkt über die USB2.0-Schnittstelle auf dem Rechner und muss nicht über die SPS gesteuert werden.\\
+Das Betriebssystem des Raspberry PI ist ein Derivat des Linux Betriebssystems. Mit einem Image speziell für einen Raspberry PI, können standardmässig Programme zum Programmieren von Pythonskripten und die Pythoninstallation mit installiert werden. Die weiter oben beschriebenen Standardbibliotheken sind ebenfalls im der Basisinstallation der Pythondistribution enthalten. Die zusätzlichen Bibliotheken von Drittanbietern müssen jedoch noch nachträglich installiert werden. Diese sind im Anhang beschrieben.
 % Dieser hat eine Arbeitsspannung von 5V.
 
 \begin{figure}[H]
@@ -19,7 +19,7 @@ Das Betriebssystem des Raspberry PI ist ein Derivat des Linux Betriebssystems. M
 \end{figure}
 
 \subsection{SPS - PiXtend}
-Die Aus- und Eingänge, die der Raspberry PI Steuert sind mit einer SPS des Herstellers PiXtend L 2.1 realisiert. Dies ist eine Steuerung, auf welche der Rechner direkt aufgeschraubt werden kann. Alle benötigten Ein- und Ausgänge für die Steuerung des Pumpdiodentreibers befinden sich direkt auf der Steuerung. Von grosser Wichtigkeit sind die analogen Ein- und Ausgänge um den Ausgangsstrom des Treibers zu steuern bzw. den Ausgangsstrom zurück in die SPS zu geben, um später die optische Leistung zu evaluieren. Die Fähigkeit analoge Signale zu verarbeiten ist der Grund diese Steuerung auszuwählen.
+Die Ein- und Ausgänge, die der Raspberry PI steuert sind mit einer SPS des Herstellers PiXtend L 2.1 realisiert. Dies ist eine Steuerung, auf welche der Rechner direkt aufgeschraubt werden kann. Alle benötigten Ein- und Ausgänge für die Steuerung des Pumpdiodentreibers befinden sich direkt auf der Steuerung. Von grosser Wichtigkeit sind die analogen Ein- und Ausgänge um den Ausgangsstrom des Treibers zu steuern bzw. den Ausgangsstrom zurück in die SPS zu geben, um später die optische Leistung zu evaluieren. Die Fähigkeit analoge Signale zu verarbeiten, ist der Grund, diese Steuerung auszuwählen.
 % Daneben erfüllt diese SPS alle Voraussetzungen, damit der Raspberry PI einwandfrei läuft. 
 
 \begin{figure}[H]
@@ -30,7 +30,7 @@ Die Aus- und Eingänge, die der Raspberry PI Steuert sind mit einer SPS des Hers
 \end{figure}
 
 \subsection{Thermoelektrischer Kühler - TEC}
-Die beiden verwendeten TECs werden unter der Pumpdiode bzw. und der Halterung des Alexandritkristalls montiert. Sie dienen dazu die Wärme vom Kristall und von der Pumpdiode ableiten. Werden die Temperaturen an den zu kühlenden bzw. zu heizenden Objekten mit Sensoren gemessen, kann eine optimale Temperatur eingestellt werden. Dieser befindet sich direkt unter der Halterung des Kristalls. Für den Kristall befindet sich die optimale Temperatur im Bereich von 18°C.
+Die beiden verwendeten TECs werden unter der Pumpdiode bzw. und der Halterung des Alexandritkristalls montiert. Sie dienen dazu die Wärme vom Kristall und von der Pumpdiode abzuleiten. Dazu wird jeweils die kühle Seite dem zu kühlenden Objekt zugewandt. Die Wärme der warmen Seite wird mit einer Wasser- oder Luftkühlung aus dem System geführt. Die Temperatur an den zu kühlenden Objekten wird mit Sensoren gemessen, so kann über ein Regelkreis mit dem TEC-Kontroller eine optimale Temperatur gefunden werden. Die thermoelektrischen Elemente befindet sich direkt unter der Halterung des Kristalls bzw. unter der Pumpdiode. Für den Kristall befindet sich die optimale Temperatur im Bereich von 18°C, bei der Pumpdiode bei etwa 19°C.
 
 % \begin{figure}[H]
 %     \centering
@@ -57,7 +57,7 @@ Die beiden verwendeten TECs werden unter der Pumpdiode bzw. und der Halterung de
 \label{label_tec_treiber}
 Aus dem Grund, dass zwei TECs gesteuert werden sollen, wurde ein zwei-kanaliger TEC-Treiber des Herstellers Meerstetter Engineering verwendet, dieser erfüllt alle Forderungen. Obwohl die Leistung von diesem zu hoch ist, wurde dieser ausgewählt. Dieser war bereits im Institut vorhanden.\\
 Auf der Softwareseite sind die Signale, hier die Temperaturen, eindeutig identifizierbar, was mit zwei ein-kanaligen Treibern nicht ohne Weiteres möglich gewesen wäre. Die Informationen werden über einen BUS an den Rechner gesendet und da weiter verarbeitet bzw. verwendet.
-Die Temperaturen der TECs werden über einen PID-Regler eingestellt. Der Treiber von Meerstetter Engineering ist in der Lage diese PID-Parameter automatisch zu finden und müssen nicht gesucht oder gar separat berechnet werden. Die TECs können lediglich eine maximale Leistung aufnehmen, aus Sicherheitsgründen muss der Strom deshalb begrenzt werden. Bei Zerstörung der TECs könnte auch die Pumpdiode und auch der Kristall in Mitleidenschaft gezogen werden.\\
+Die Temperaturen der TECs werden über einen PID-Regler eingestellt, wie weiter oben erwähnt. Der Treiber von Meerstetter Engineering ist in der Lage diese PID-Parameter automatisch zu finden und müssen nicht gesucht oder gar separat berechnet werden. Die TECs können jedoch lediglich eine maximale Leistung aufnehmen, aus Sicherheitsgründen muss der Strom deshalb begrenzt werden. Die Begrenzung der Stromzufuhr ist integraler Bestandteil des Kontrollers und kann direkt in der Software des TEC-Kontrollers vorgenommen werden und muss nicht separat Programmiert werden. Dazu ist auch eine Begrenzung der Temperaturen vorzusehen. Diese stellt sicher, dass die Temperatur des Kristalls bzw. der Pumpdiode eine gewisse Höhe nicht überschreiten kann. Auch dies konnte in der Software des Kontrollers vorgenommen werden. Dies ist notwendig, weil bei Zerstörung der TECs auch die Pumpdiode und auch der Kristall in Mitleidenschaft gezogen werden könnten.\\
 
 \begin{figure}[H]
     \centering
@@ -68,7 +68,7 @@ Die Temperaturen der TECs werden über einen PID-Regler eingestellt. Der Treiber
 
 \subsection{Pumpdiodentreiber}
 \label{chptr:_diodentreiber}
-Der Pumpdiodentreiber oder auch Diodentreiber wurde vom Hersteller \textit{OptLaser} bezogen. Auf der Abb. \ref{fig:diodentreiber_hw} sind die Eingänge für die Energieversorgung zu sehen und daneben die analogen bzw. PWM-Eingänge zum steuern des Ausgangstroms. Die Pumpdiode wird mit 30V und bis zu 0.5A betrieben, benötigt dem entsprechend eine Eingangsleistung von mindestens 15W. [5] Der Diodentreiber verfügt über eine Spannung von 30V und kann bis zu 1.5A speisen. Um die Laserdiode jedoch vor der Zerstörung zu bewahren wurde die Stromstärke auf 0.8A beschränkt dies wurde in der Software so hinterlegt. Auf den Aufbau der Software des Diodentreibers wird im Kapitel \ref{chptr:software} genauer eingegangen.
+Der Pumpdiodentreiber oder auch Diodentreiber wurde vom Hersteller \textit{OptLaser} bezogen. Auf der Abb. \ref{fig:diodentreiber_hw} sind die Eingänge für die Energieversorgung zu sehen und daneben die analogen bzw. PWM Eingänge zum Steuern des Ausgangstroms. Die Pumpdiode wird mit 30V und bis zu 0.5A betrieben, benötigt dementsprechend eine Eingangsleistung von mindestens 15W. [5] Der Diodentreiber verfügt über eine Spannung von 30V und kann bis zu 1.5A speisen. Um die Laserdiode jedoch vor der Zerstörung zu bewahren, wurde die Stromstärke auf 0.8A beschränkt. Dies wurde in der Software des Raspberry PIs so festgelegt. Auf den Aufbau der Software des Diodentreibers wird im Kapitel \ref{chptr:software} noch genauer eingegangen.
 
 \begin{figure}[H]
     \centering
@@ -96,7 +96,7 @@ Die in der Abb. \ref{fig:diodentreiber_modus_hw} gezeigte Darstellung ist das Si
 \end{figure}
 
 \subsection{Energieversorgung}
-Die benötigte Leistung des Netzteils für das gesamte System beläuft sich auf etwa 80W. Dies wurde einerseits errechnet (s. Anhang \ref{formula:_calculation_sp_power}), andererseits mit einem Netzteil an dem alle Komponenten, bis auf den Diodentreiber angeschlossen wurden verifiziert. Die Pumpdiode wird mit 30V gespiesen, wohingegen der Rest der Steuerung mit 24V betrieben wird. Dies verlangte, dass entweder zwei Netzteile eingesetzt wurden oder aber ein Netzteil und ein DC/DC-Wandler, der die Spannung des Netzteils auf die benötigten 24V herunter regelt zum Einsatz kommt. Die Entscheidung viel auf einen DC/DC-Wandler, weil dieser im Volumen kleiner ist und somit weniger Platz im Gehäuse in Anspruch nimmt. Dieser kann eine Spannung von bis zu 36V aufnehmen und misst 24V beim Ausgang.
+Die benötigte Leistung des Netzteils für das gesamte System beläuft sich auf etwa 80W. Dies wurde einerseits errechnet (s. Anhang \ref{formula:_calculation_sp_power}), andererseits mit einem Netzteil, an dem alle Komponenten bis auf den Diodentreiber angeschlossen wurden, verifiziert. Die Pumpdiode wird mit 30V gespiesen, wohingegen der Rest der Steuerung mit 24V betrieben wird. Dies verlangte, dass entweder zwei Netzteile eingesetzt wurden oder aber ein Netzteil und ein DC/DC-Wandler, der die Spannung des Netzteils auf die benötigten 24V herunter regelt, zum Einsatz kommt. Die Entscheidung fiel auf einen DC/DC-Wandler, weil dieser im Volumen kleiner ist und somit weniger Platz im Gehäuse in Anspruch nimmt. Dieser kann eine Spannung von bis zu 36V aufnehmen und misst 24V beim Ausgang.
 
 \begin{figure}[H]
 %https://www.reichelt.com/ch/de/schaltnetzteil-geschlossen-195-w-36-v-5-5-a-mw-rsp-200-36-p147907.html?PROVID=2808&gad_source=1&gclid=Cj0KCQiA5-uuBhDzARIsAAa21T-__vZqX_esib7CfoGVmrPyoBO7UXEfQpRHOOkOo2j1YGIXCt2oLD0aAhbVEALw_wcB
@@ -115,20 +115,20 @@ Die benötigte Leistung des Netzteils für das gesamte System beläuft sich auf 
 \end{figure}
 
 \subsection{Sensorik}
-Die Positionen der Temperaturmessung des Alexandritkristalls und der Diode sind in Abbildung \ref{fig:temp_measurement_hw} dargestellt. An diesen Positionen stören sie den Laser im Betrieb nicht und können trotzdem die Temperatur möglichst nahe an der Quelle messen.\\
+Die Positionen der Temperaturmessung des Alexandritkristalls und der Diode sind in Abbildung \ref{fig:temp_measurement_hw_1} dargestellt. An diesen Positionen stören sie den Laser im Betrieb nicht und können trotzdem die Temperatur möglichst nahe an der Quelle messen.\\
 
 \begin{figure}[H]
     \centering
     \includegraphics[scale=0.2]{98_images/all_control_theory.PNG}
     \caption{Positionen der Temperaturfühler für die Diode.}
-    \label{fig:temp_measurement_hw}
+    \label{fig:temp_measurement_hw_1}
 \end{figure}
 
 \begin{figure}[H]
     \centering
     \includegraphics[scale=0.2]{98_images/all_control_theory.PNG}
     \caption{Positionen der Temperaturfühler für den Kristall.}
-    \label{fig:temp_measurement_hw}
+    \label{fig:temp_measurement_hw_2}
 \end{figure}
 % \subsection{Verkabelung}  % Architektur der Verkabelung
 % Die externe Verkabelung des Gehäuses bzw. dessen Komponenten, soll mit einem \textbf{XYZ}-Kabel erfolgen. Somit können alle Komponente, die zum Laser gehen kompakt in einem Kabel geführt werden.\\
@@ -142,7 +142,7 @@ Die Positionen der Temperaturmessung des Alexandritkristalls und der Diode sind 
 % \end{figure}
 
 \subsection{Die Digitalanzeige}
-Für die Digitalanzeige waren vor allem drei Aspekte ausschlaggebend, um die gewünschte Funktion zu gewährleisten. Die Eingabe der Werte, die Anzeige der Werte und Verständlichkeit der angezeigten Werte. All die Kriterien sollten erfüllt werden, um die Steuerung des Lasers optimal zu gewährleisten. In der Folgenden Tabelle wurden einige Kriterien, die die zuvor genannten Aspekte ermöglichen sollen. Auch aus Sicherheitsgründen muss die Ergonomie der Anzeige intuitiv gestaltet sein und muss im Notfall handhabbar bleiben. Es werden zwei Displaytypen einander gegenüber gestellt.
+Für die Digitalanzeige waren vor allem drei Aspekte ausschlaggebend, um die gewünschte Funktion zu gewährleisten. Die Eingabe der Werte, die Anzeige der Werte und Verständlichkeit der angezeigten Werte. All die Kriterien sollten erfüllt werden, um die Steuerung des Lasers optimal zu gewährleisten. In der folgenden Tabelle wurden einige Kriterien die die zuvor genannten Aspekte ermöglichen sollen. Auch aus Sicherheitsgründen muss die Ergonomie der Anzeige intuitiv gestaltet sein und muss im Notfall beherrschbar bleiben. Es werden zwei Displaytypen einander gegenüber gestellt.
 
 \begin{table}[H]
     \centering
@@ -159,7 +159,7 @@ Für die Digitalanzeige waren vor allem drei Aspekte ausschlaggebend, um die gew
     \label{tab:choice_display_hw}
 \end{table}
 
-Die Entscheidung fiel auf die Touchanzeige. Zusätzlich lassen sich alle Komponente wie Knöpfe direkt in die Anzeige programmieren. Es müssen keine komplexen Abläufe programmiert werden, die die Betätigung der physischen Knöpfe erkennt und das Programm lenkt. Zusätzlich müssen keine Ein-/Ausgänge zusätzlich auf der SPS einprogrammiert werden. Mit der Anzeige können ganze Designs erstellt werden, was das Arbeiten mit der Steuerung ergonomischer macht.
+Die Entscheidung fiel auf die Touch-Anzeige. Zusätzlich lassen sich alle Komponente wie Knöpfe direkt in die Anzeige programmieren. Es müssen keine komplexen Abläufe programmiert werden, die die Betätigung der physischen Knöpfe erkennt und das Programm lenkt. Zusätzlich müssen keine Ein-/Ausgänge zusätzlich auf der SPS einprogrammiert werden. Mit der Anzeige können ganze Designs erstellt werden, was das Arbeiten mit der Steuerung ergonomischer macht.
 
 \subsection{Konstruktion des Gehäuses}
 Das Gehäuse war bereits vorhanden. Die oben aufgelisteten Komponenten wurden auf zusätzlichen Blechen montiert, in die Gewindelöcher eingebracht wurden. Durch die konvexe Form der Seiten des Gehäuses entstand im Inneren des Kontrollers mehr Fläche für die Komponenten und vereinfachte dadurch die Montage. Zusätzlich mussten noch die Zugänge für die Verkabelung der Stromversorgung, deren Schalter und das Kabel für die Ansteuerung der Komponenten im Laser-Aufbau angepasst werden. Dafür wurden sämtliche Löcher für spätere Erweiterungen beibehalten.
@@ -171,5 +171,5 @@ Das Gehäuse war bereits vorhanden. Die oben aufgelisteten Komponenten wurden au
     \label{fig:enter-label}
 \end{figure}
 \subsection{Testaufbau - Mock-up}
-In einem Mock-up konnten die Funktionen und das Verhalten der Steuerung geprüft werden. Darunter wurde getestet, ob die Temperaturen in der Steuerung in einem gewünschten Rahmen von 40°C-65°C blieben. $[13]$ Zur Referenz wurde die interne Messung der CPU verwendet. Gemessen werden die Temperaturen mit der internen Temperaturmessung des Prozessors des Raspberry PI. Die Temperatur im Gehäuse wurde dann von der Temperatur des Prozessors abgeleitet. Dafür wurde sie mit einem Temperaturmessgerät extern gemessen und die Messergebnisse mit denen des Prozessors verknüpft.
+In einem Mock-up konnten die Funktionen und das Verhalten der Steuerung geprüft werden. Darunter wurde getestet, ob die Temperaturen in der Steuerung in einem gewünschten Rahmen von 40°C - 65°C blieben. $[13]$ Zur Referenz wurde die interne Messung der CPU verwendet. Gemessen werden die Temperaturen mit der internen Temperaturmessung des Prozessors des Raspberry PI. Die Temperatur im Gehäuse wurde dann von der Temperatur des Prozessors abgeleitet. Dafür wurde sie mit einem Temperaturmessgerät extern gemessen und die Messergebnisse mit denen des Prozessors verknüpft.
 Die Positionen der Komponenten im Gehäuse wurde mit Hilfe von CAD-Software geprüft. Danach wurden die oben genannten Bleche erstellt und die Komponente mit Verschraubungen platziert.
