@@ -1,27 +1,75 @@
 \begin{appendix} %Anhang
-\section{Ein Anhang}
+\section{Anhang}
 
-
+\includepdf[pages=2, scale=0.8, angle=0, pagecommand={
 \subsection{Aufgabenstellung im Originalwortlaut}
+\label{aufgabenstellung_originalwortlaut}}]
+{11_PDFs/fhnw_pro6m_alexandrit_femtosekunden_laser_disposition_rev_4.pdf}
 
+\includepdf[pages=3, scale=0.8, angle=0, pagecommand={
+% \subsection{Aufgabenstellung im Originalwortlaut}
+\label{aufgabenstellung_originalwortlaut}}]
+{11_PDFs/fhnw_pro6m_alexandrit_femtosekunden_laser_disposition_rev_4.pdf}
 
-\subsection{Gesamtübersicht}
+\includepdf[pages=4, scale=0.8, angle=0, pagecommand={
+% \subsection{Aufgabenstellung im Originalwortlaut}
+\label{aufgabenstellung_originalwortlaut}}]
+{11_PDFs/fhnw_pro6m_alexandrit_femtosekunden_laser_disposition_rev_4.pdf}
 
-\subsection{Berechnung der Leistung der Energieversorgung}
-\begin{equation}
-P_{GES} = 2*P_{TEC}+P_{RPI}+P_{LDD}+P_{VENT} = 2*8W+12W+45W+1.06W \approx 80W
-    \label{formula:_calculation_sp_power}
-\end{equation}
+\subsection{Stückliste der Verwendeten Materialien}
+\begin{table}[H]
+    \centering
+    \begin{tabular}{c|l|l}
+        Stückzahl& \textbf{Bauteil}&       \textbf{Beschreibung}\\
+        \hline
+        1&          TEC-Treiber&           TEC 1122 - Meerstetter Engineering GmbH\\
+        1&          Diodentreiber&         LPLDD-1,5A-35V-TP-H - Optlasers.com\\
+        1&          Laserdiode&            K635EWDFN-5.000W - bwt-bj.com\\
+        1&          Raspberry PI&          Raspberry PI 3B+\\
+        1&          Betriebssystem&        Raspberry Pi OS (Legacy, 64-bit) Port of Debian Bulls-\\
+        &           &                      eye with security updates and desktop environment.\\
+        1&          TEC Kristall&          S intenet/Labor\\
+        1&          TEC Diode&             CP6040603956 - CUI Devices\\
+        1&          Netzteil&              MW RSP-200-36 - Mean Well\\
+        1&          DC/DC-Wandler&         RSD-30G-24 - Mean Well\\
+        1&          Kollimierungslinse&    Bla s. fotos\\
+        1&          \textit{NumPy}&        Version 2.26 bla\\
+        1&          \textit{pandas}&       Version bla\\
+        1&          \textit{queue}&        Version bla\\
+        1&          \textit{threading}&    Version bla\\
+        1&          Skript GUI&            custom\_gui.py - Anhang\\
+        1&          Skript Diodentreiber&  ldd\_control\_ang.py - Anhang\\
+    \end{tabular}
+    \caption{Stückliste der Hard- und Softwarekomponenten, die in der Steuerung verwendet wurden.}
+    \label{tab:bom}
+\end{table}
 
-\subsection{Beschreibung der Drittanbieter-Bibliotheken für die Programmierung}
-\subsubsection{Pandas}
-\textit{pandas} ist eine Programmbibliothek für Python zur Verarbeitung, Analyse und Darstellung von Daten. Insbesondere enthält sie Datenstrukturen und Operatoren für den Zugriff auf numerische Tabellen und Zeitreihen. \textit{pandas} ist Freie Software, veröffentlicht unter der 3-Klausel-BSD-Lizenz. Der Name leitet sich von dem englischen Begriff panel data (Paneldaten) ab, einer ökonometrischen Bezeichnung für Datensätze, die Beobachtungen über mehrere Zeiträume für dieselbe Untersuchungseinheit enthalten. [16]
+\section{Weiteres}
+\subsection{Schema Pumpdiodenhalterung}
+\label{chptr:_pumpdiodenhalterung}
 
-\subsubsection{NumPy}
-\textit{NumPy} ist eine Programmbibliothek für die Programmiersprache Python, die eine einfache Handhabung von Vektoren, Matrizen oder generell großen mehrdimensionalen Arrays ermöglicht. Neben den Datenstrukturen bietet \textit{NumPy} auch effizient implementierte Funktionen für numerische Berechnungen an. [17]
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.35]{98_images/kuehlblock_isometrie.PNG}
+    \caption{Der gesamte Kühlblock.}
+    \label{fig:enter-label}
+\end{figure}
 
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.35]{98_images/kuehlblock_section.PNG}
+    \caption{Die Schnittansicht für die Kanäle der Wasserkühlung.}
+    \label{fig:enter-label}
+\end{figure}
+
+\subsection{Elektrische Verbindungen der Steuerung}
+% \subsection{Beschreibung einiger Drittanbieter-Bibliotheken für die Programmierung}
+
+% \subsection{Queue}
+% <<In computer science, a queue is a collection of entities that are maintained in a sequence and can be modified by the addition of entities at one end of the sequence and the removal of entities from the other end of the sequence.>> [] https://en.wikipedia.org/wiki/Queue_(abstract_data_type)
 \label{section:_libraries_py}
-\subsection{Tests}
+
+% \subsection{Tests}
 \section{Programmcode}
 \lstdefinestyle{custompython}{
   belowcaptionskip=1\baselineskip,
@@ -38,42 +86,16 @@ P_{GES} = 2*P_{TEC}+P_{RPI}+P_{LDD}+P_{VENT} = 2*8W+12W+45W+1.06W \approx 80W
   stringstyle=\color{orange},
 }
 
-% \lstinputlisting[caption=Ein kurzes Codebeispiel in der Programmiersprache Python, style=custompython]{gui_custom_bak.py}
+\lstinputlisting[caption=Der Haupt-Quell-Code der Steuerung; custom\_gui.py, style=custompython]{gui_custom.py}
 \label{main_src}
-% \lstinputlisting[caption=Ein kurzes Codebeispiel in der Programmiersprache Python, style=custompython]{ldd_control.py}
 
-\subsection{Weitere Themen}
-% \subsubsection{Producer - Consumer - Design Pattern}
-% Das Producer-Consumer-Designmuster ist ein häufig verwendetes Muster in der Softwareentwicklung, insbesondere bei Multithreading- oder Multitasking-Anwendungen, bei denen ein Teil des Codes Daten produziert und ein anderer Teil diese Daten konsumiert.
-% 
-% Hier ist eine grundlegende Erklärung, wie das Muster funktioniert:
-% 
-% 1. **Producer (Erzeuger)**:
-%    - Der Producer ist für die Erzeugung von Daten verantwortlich. Diese Daten können verschiedene Formen annehmen, wie z.B. Benutzereingaben, Nachrichten aus einer Netzwerkverbindung, generierte Inhalte usw.
-%    - Der Producer fügt die erzeugten Daten in eine gemeinsame Datenstruktur ein, die als Puffer oder Queue bezeichnet wird. Dies ermöglicht es, die Daten zwischen dem Producer und dem Consumer zu übertragen.
-%    
-% 2. **Consumer (Verbraucher)**:
-%    - Der Consumer ist für die Verarbeitung der erzeugten Daten verantwortlich. Dies kann das Analysieren, Weiterleiten, Speichern oder jede andere Art von Verarbeitung umfassen, die je nach Anwendungsfall erforderlich ist.
-%    - Der Consumer liest die Daten aus dem gemeinsamen Puffer oder der Queue und verarbeitet sie entsprechend.
-% 
-% 3. **Buffer (Puffer)**:
-%    - Der Puffer oder die Queue dient als gemeinsamer Speicherbereich zwischen dem Producer und dem Consumer. Es ermöglicht eine asynchrone Kommunikation zwischen den beiden Teilen des Systems.
-%    - Der Puffer kann in verschiedenen Formen implementiert werden, wie z.B. einem Array, einer Liste oder einer speziellen Datenstruktur, die für den Zweck der Multithreading-Kommunikation optimiert ist.
-%    
-% 4. **Kommunikation und Synchronisation**:
-%    - Da der Producer und der Consumer möglicherweise unterschiedliche Geschwindigkeiten haben oder asynchron arbeiten, ist eine angemessene Synchronisation wichtig, um sicherzustellen, dass der Producer Daten in den Puffer einfügt, bevor der Consumer versucht, Daten daraus zu lesen.
-%    - Dies wird normalerweise durch Mechanismen wie Semaphoren, Mutexe (gegenseitiger Ausschluss) oder spezielle synchronisierte Datenstrukturen erreicht, die eine sichere Kommunikation zwischen den Threads oder Prozessen ermöglichen.
-% 
-% Zusammenfassend lässt sich sagen, dass das Producer-Consumer-Muster die Aufgaben der Datenproduktion und -verarbeitung klar trennt und eine effiziente, synchronisierte Kommunikation zwischen den beiden ermöglicht. Dies führt oft zu besser strukturiertem und leichter wartbarem Code, insbesondere in Umgebungen mit paralleler Ausführung.
-% 
-%\includepdf[pages={1-2},nup=1x2,landscape=true,scale=0.85,offset=10 -40,pagecommand={\section{Eingefügtes Dokument; zwei Seiten auf einer}\label{app:Aufgabenstellung}\thispagestyle{myheadings}}]{appendix/aufgabenstellung.pdf} \newpage
+\lstinputlisting[caption=Der Quell-Code für die Steuerung der SPS; ldd\_control\_ang.py, style=custompython]{ldd_control_ang.py}
+\label{ldd_src}
 
-%%Bei mehrseitigen Dokumenten die folgenden Seiten ohne Überschrift:
-%\includepdf[pages={3-6},nup=1x2,landscape=true,scale=0.85,offset=10 -40,pagecommand={\thispagestyle{myheadings}}]{appendix/aufgabenstellung.pdf} \newpage
+\subsubsection{Python Bibliothek - \textit{pandas}}
+<<\textit{pandas} ist eine Programmbibliothek für Python zur Verarbeitung, Analyse und Darstellung von Daten. Insbesondere enthält sie Datenstrukturen und Operatoren für den Zugriff auf numerische Tabellen und Zeitreihen. \textit{pandas} ist Freie Software, veröffentlicht unter der 3-Klausel-BSD-Lizenz. Der Name leitet sich von dem englischen Begriff panel data (Paneldaten) ab, einer ökonometrischen Bezeichnung für Datensätze, die Beobachtungen über mehrere Zeiträume für dieselbe Untersuchungseinheit enthalten.>> [10]
 
-%\includepdf[pages={1},nup=1x1,landscape=true,scale=0.85,offset=10 -40,pagecommand={\section{Eingefügte PDF-Tabelle}\label{app:Timetable}\thispagestyle{myheadings}}]{appendix/timeline_example.pdf} \newpage
-
-%%Bei mehrseitigen Dokumenten die folgenden Seiten ohne Überschrift:
-%\includepdf[pages={2-5},nup=1x1,landscape=true,scale=0.85,offset=0 -20,pagecommand={\thispagestyle{myheadings}}]{appendix/timeline_example.pdf} \newpage
+\subsubsection{Python Bibliothek - \textit{NumPy}}
+<<\textit{NumPy} ist eine Programmbibliothek für die Programmiersprache Python, die eine einfache Handhabung von Vektoren, Matrizen oder generell großen mehrdimensionalen Arrays ermöglicht. Neben den Datenstrukturen bietet \textit{NumPy} auch effizient implementierte Funktionen für numerische Berechnungen an.>> [11]
 
 \end{appendix}
