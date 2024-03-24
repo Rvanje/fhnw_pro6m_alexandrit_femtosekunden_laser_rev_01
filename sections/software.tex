@@ -101,7 +101,14 @@ Schemata sind in Abb. \ref{fig:dataflow_1} und \ref{fig:dataflow_2} gezeigt. Auf
 Die Evaluierung der Prozesswert, wie die Temperaturen der Diode und des Kristalls als auch die Leistung der Pumpdiode werden in \textit{Echtzeit} angezeigt.
 Die Temperaturen beider Komponenten werden direkt vom TEC-Kontroller ausgewertet und können durch einen Befehl angefordert werden.
 Die Leistung des Diodentreibers wird über ein analoges Signal ermittelt. Dieses wird auf der SPS bezogen und in der Steuerung ausgewertet. Wie weiter oben bereits erwähnt, ist dies nicht die elektrische, sondern die optische Leistung. Diese wird über eine Umrechnungstabelle ermittelt, welche in der Software hinterlegt ist. Je nach Konfiguration des Laseraufbaus, kann diese angepasst werden, die Werte werden über eine Funktion evaluiert.
+Der Eingang bzw. die Spannung am analogen Eingang ist linear und wurde so in die Software übernommen.
 
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.5]{98_images/analog_eingang_trendline.png}
+    \caption{Trendlinie des analogen Eingangs.}
+    \label{fig:enter-label}
+\end{figure}
 \subsection{Frontend}
 Das \textit{Frontend} umfasst alle Bereiche, die mit der Benutzeroberfläche (GUI) zu tun haben. So beinhaltet dies das Framework, mit dem das Design der GUI entwickelt worden ist und deren Benutzerführung. 
 Die GUI soll alle benötigten und wichtigen Werte anzeigen und einzustellende Werte einlesen. Darunter ist die Anzeige der Temperaturen des Kristalls und der Pumpdiode im Bereich der Zieltemperaturen zu halten. Bei Notwendigkeit können die Solltemperaturen beider TECs geändert werden. Daneben besteht auch die Möglichkeit, den Nennstrom der Pumpdiode zu ändern. Neben den notwendigen angezeigten Werten werden auch Werte zur Überwachung des Prozesses angezeigt. Um die Temperatur des Gehäuses zu überwachen, wird die Temperaturmessung des Prozessors des Raspberry PIs verwendet. Mit dieser kann auf die Temperatur im Gehäuse der Steuerung geschlossen werden. Um den Anforderungen gerecht zu werden, wurden verschiedene Ansätze verfolgt, die im Folgenden beschrieben werden. Dazu wurden teils Pro und Kontra-Vergleiche zur Hilfe gezogen.\\
