@@ -42,10 +42,10 @@ Die beiden verwendeten TECs werden unter der Pumpdiode bzw. der Halterung des Al
 
 \subsection{TEC-Treiber}
 \label{label_tec_treiber}
-Aus dem Grund, dass zwei TECs gesteuert werden sollen, wurde ein zwei-kanaliger TEC-Treiber des Herstellers Meerstetter Engineering verwendet, dieser erfüllt alle benötigten Voraussetzungen. Obwohl die Leistung von diesem zu hoch ist, wurde dieser ausgewählt. Dieser war bereits im Institut vorhanden.\\
-Auf der Softwareseite sind die Signale, hier die Temperaturen, eindeutig identifizierbar, was mit zwei ein-kanaligen Treibern nicht ohne Weiteres möglich gewesen wäre. Die Informationen werden über einen BUS an den Rechner gesendet und da weiter verarbeitet bzw. verwendet.
-Die Temperaturen der TECs werden über ein TEC-Kontroller mit einem PID-Regler eingestellt, wie weiter oben erwähnt. Zusätzlich ist der Kontroller von Meerstetter Engineering ist in der Lage diese PID-Parameter automatisch zu finden und müssen nicht gesucht oder gar separat berechnet werden. [19]
-Die TECs können lediglich eine maximale Leistung aufnehmen, aus Sicherheitsgründen muss der Strom deshalb begrenzt werden. Die Begrenzung der Stromzufuhr ist integraler Bestandteil des Kontrollers und kann direkt in der Software des TEC-Kontrollers vorgenommen werden und muss nicht separat Programmiert werden. Dazu ist auch eine Begrenzung der Temperaturen vorzusehen, auch dies konnte in der Software des Kontrollers vorgenommen werden. Es stellt sicher, dass die Temperatur des Kristalls bzw. der Pumpdiode eine gewisse Höhe nicht überschreiten kann. Dies ist notwendig, weil bei Zerstörung der TECs auch die Pumpdiode und auch der Kristall in Mitleidenschaft gezogen werden könnten. In der Abb. \ref{fig:tec_treiber_hw} ist der TEC-Kontroller von Meerstetter abgebildet.\\
+Aus dem Grund, dass zwei TECs gesteuert werden sollen, wurde ein zwei-kanaliger TEC-Treiber des Herstellers Meerstetter Engineering verwendet, dieser erfüllt alle benötigten Voraussetzungen. Obwohl die Leistung von diesem zu hoch ist, wurde dieser ausgewählt weil er bereits im Institut vorhanden gewesen ist.\\
+Auf der Softwareseite sind die Signale, hier die Temperaturen, eindeutig identifizierbar, was mit zwei ein-kanaligen Treibern nicht ohne Weiteres möglich gewesen wäre. Die Informationen werden über einen BUS an den Rechner gesendet und da weiter verarbeitet bzw. auf der Digitalanzeige angezeigt.
+Die Temperaturen der TECs werden über ein TEC-Kontroller mit einem PID-Regler eingestellt, wie weiter oben erwähnt. Zusätzlich ist der Kontroller von Meerstetter Engineering in der Lage diese PID-Parameter automatisch zu finden und müssen nicht gesucht oder gar separat berechnet werden. Dies wurde auf dem Testaufbau realisiert, wo die Voraussetzungen für den Betrieb der Komponenten am nächsten an der künftigen Laseraufbau waren. [19]
+Die TECs können lediglich eine maximale Leistung aufnehmen, aus Sicherheitsgründen für die Komponenten, muss der Strom deshalb begrenzt werden. Die Begrenzung der Stromzufuhr ist integraler Bestandteil des Kontrollers und kann direkt in der Software des TEC-Kontrollers vorgenommen werden und muss nicht separat Programmiert werden. Die Steuerung kann nur eine Begrenzte Leistung abgeben, welche vom TEC-Kontroller ausgeschöpft würde. Aus diesem Grund wurden die maximalen Ströme begrenzt. Die Ströme reichen aus, um die Diode bis zu einer optischen Leistung von ca. 4.5W mit einer Kühlwassertemperatur von ca. 23.5°C zu kühlen. Darüber kann die abgegebene Wärme nicht mehr dissipiert werden, die Wärme staut sich im Sockel der Pumpdiode bzw. der Kristallhalterung. Der Regler kann nicht mehr regeln und die Temperaturen erhöhen sich kontinuierlich. Dazu ist auch eine Begrenzung der Temperaturen vorzusehen, auch dies konnte in der Software des Kontrollers vorgenommen werden. Es stellt sicher, dass die Temperatur des Kristalls bzw. der Pumpdiode eine gewisse Höhe nicht überschreiten kann. Dies ist notwendig, weil bei Zerstörung der TECs auch die Pumpdiode und auch der Kristall in Mitleidenschaft gezogen werden könnten. In der Tabelle \ref{tab:tec_a_limit} sind die Einstellungen für die Ströme beider TECs ersichtlich gleich darunter, in der  Abb. \ref{fig:tec_treiber_hw} ist der TEC-Kontroller von Meerstetter abgebildet.
 
 \begin{figure}[H]
     \centering
@@ -53,6 +53,18 @@ Die TECs können lediglich eine maximale Leistung aufnehmen, aus Sicherheitsgrü
     \caption{Ein zwei-kanaliger TEC-Treiber vom Hersteller Meerstetter Engineering. [19]}
     \label{fig:tec_treiber_hw}
 \end{figure}
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{l|l|l}
+         \textbf{TECs}& \textbf{Max. Strom}&    \textbf{Max. Temperatur} \\
+         \hline
+         Diode&         1.5A&                   15°C - 35°C [1]\\
+         Kristall&      0.75A&                  $-$
+    \end{tabular}
+    \caption{Begrenzung der Ströme für die TECs des Kristalls und der Diode}
+    \label{tab:tec_a_limit}
+\end{table}
 
 \subsection{Pumpdiodentreiber}
 \label{chptr:_diodentreiber}
@@ -125,15 +137,18 @@ Die Pumpdiode wird mit 30V gespiesen, wohingegen der Rest der Steuerung mit 24V 
 \end{figure}
 
 \subsection{Sensorik}
-Die Positionen der Temperaturmessung des Alexandritkristalls ist in der Abb.\ref{fig:temp_measurement_hw_1} dargestellt. An diesen Positionen stört sie den Laser im Betrieb nicht und die Temperatur kann trotzdem möglichst nahe an der Quelle messen werden.\\
+Die Positionen der Temperaturmessung des Alexandritkristalls ist in der Abb.\ref{fig:temp_measurement_hw_1} dargestellt. An diesen Positionen stört sie den Laser im Betrieb nicht und die Temperatur kann trotzdem möglichst nahe an der Quelle messen werden. Für den Kristall befindet sich die optimale Temperatur im Bereich von 20°C, bei der Pumpdiode bei etwa 18°C. Thermoelektrische Kühler der Art, der in der Abb. \ref{fig:tec_controller_free} sind jeweils eingebaut.\\
 
-% Die Position des Thermistors ist in Abb. \ref{fig:termp_measurement_hw_1} gezeigt.
-% \begin{figure}[H]
-%     \centering
-%     \includegraphics[scale=0.2]{98_images/all_control_theory.PNG}
-%     \caption{Positionen der Temperaturfühler für die Diode.}
-%     \label{fig:temp_measurement_hw_1}
-% \end{figure}
+In der Abb. \ref{fig:termp_measurement_hw_1} ist die Pumpdiode gezeigt. Diese hat bereits einen integrierten Temperatursensor, der direkt angeschlossen werden kann.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.08, trim={100mm 100mm 100mm 100mm}, clip]{98_images/IMG_20240322_111841.jpg}
+    \caption{Positionen der Temperaturfühler für die Diode.}
+    \label{fig:temp_measurement_hw_1}
+\end{figure}
+
+Beim Kristall in Abb. \ref{fig:thermistor_cr}, soll der Thermistor an gezeigter Stelle platziert werden.
 
 \begin{figure}[H]
     \centering
@@ -142,10 +157,8 @@ Die Positionen der Temperaturmessung des Alexandritkristalls ist in der Abb.\ref
     \label{fig:thermistor_cr}
 \end{figure}
 
-Für den Kristall befindet sich die optimale Temperatur im Bereich von 18°C, bei der Pumpdiode bei etwa 19°C. Thermoelektrische Kühler der Art, der in der Abb. \ref{fig:tec_controller_free} sind jeweils eingebaut.
-
 \subsection{Digitalanzeige}
-Für die Digitalanzeige waren vor allem drei Aspekte ausschlaggebend, um die gewünschte Funktion zu gewährleisten. Die Eingabe der Werte, die Anzeige der Werte und die Verständlichkeit der angezeigten Werte. All die Kriterien sollten erfüllt werden, um die Steuerung des Lasers optimal zu gewährleisten. In der folgenden Tabelle wurden einige Kriterien die die zuvor genannten Aspekte ermöglichen sollen aufgelistet. Auch aus Sicherheitsgründen muss die Ergonomie der Anzeige intuitiv gestaltet sein und muss im Notfall beherrschbar bleiben. Es werden zwei Displaytypen einander gegenüber gestellt, damit der optimalen Displaytypen evaluiertwerden kann.
+Für die Digitalanzeige waren vor allem drei Aspekte ausschlaggebend, um die gewünschte Funktion zu gewährleisten. Die Eingabe der Werte, die Anzeige der Werte und die Verständlichkeit der angezeigten Werte. All die Kriterien sollten erfüllt werden, um die Steuerung des Lasers optimal zu gewährleisten. In der folgenden Tabelle wurden einige Kriterien die die zuvor genannten Aspekte ermöglichen sollen aufgelistet. Auch aus Sicherheitsgründen muss die Ergonomie der Anzeige intuitiv gestaltet sein und muss im Notfall beherrschbar bleiben. Es werden zwei Displaytypen einander gegenüber gestellt, damit der optimalen Displaytyp evaluiert werden kann.
 
 \begin{table}[H]
     \centering
@@ -155,7 +168,7 @@ Für die Digitalanzeige waren vor allem drei Aspekte ausschlaggebend, um die gew
         Bedienung&                      $-$ Taster Analogeingänge&      $+$ Touch integriert\\
         Anzeige&                        $-$ Kleine Anzeige&             $+$ Grössere Anzeige\\
         Verständlichkeit&               $-$ Kryptische Anzeige&         $+$ Verständliche Anzeige\\
-        Benutzerführung&                 $-$ Tieferes Menü&              $+$ Weniger tiefes Menü\\
+        Benutzerführung&                $-$ Tieferes Menü&              $+$ Weniger tiefes Menü\\
         Programmierung&                 $+$ Einfache Programmierung&    $-$ Anspruchsvolle Programmierung
     \end{tabular}
     \caption{Pro - Kontra Liste für die Auswahl der Digitalanzeige}
@@ -165,15 +178,23 @@ Für die Digitalanzeige waren vor allem drei Aspekte ausschlaggebend, um die gew
 Die Entscheidung fiel auf die Touch-Anzeige. Zusätzlich lassen sich alle Komponente wie Knöpfe direkt in die Anzeige programmieren. Es müssen keine komplexen Abläufe programmiert werden, die die Betätigung sogenannte \textit{interrupts} der physischen Knöpfe erkennt und das Programm lenkt. [5] Zusätzlich müssen keine Ein-/Ausgänge zusätzlich auf der SPS einprogrammiert werden. Mit der Anzeige können ganze Designs erstellt werden, was das Arbeiten mit der Steuerung ergonomischer macht.
 
 \subsection{Testaufbau - Mock-up}
-In einem Mock-up aus Karton mit den gleichen Dimensionen, wie das finale Steuerungsgehäuse, konnten die Funktionen und das Verhalten der Steuerung geprüft werden. Darunter wurde getestet, ob die Temperaturen in der Steuerung in einem gewünschten Rahmen von 40°C - 65°C blieben. $[7]$ Gemessen werden die Temperaturen mit der internen Temperaturmessung des Prozessors des Raspberry PI. Ergänzend wurden die Positionen der Komponenten im Gehäuse wurde mit Hilfe von CAD-Software geprüft. Danach wurden die oben genannten Bleche erstellt und die Komponente mit Verschraubungen platziert. Für die Bleche hatte das bestehende Gehäuse bereits Verschraubungen, die verwendet werden konnten.
+In einem Mock-up aus Karton mit den gleichen Dimensionen, wie das finale Steuerungsgehäuse, konnten die Funktionen und das Verhalten der Steuerung geprüft werden. Darunter wurde getestet, ob die Temperaturen in der Steuerung in einem gewünschten Rahmen von 40°C - 65°C blieben. $[7]$ Gemessen werden die Temperaturen mit der internen Temperaturmessung des Prozessors des Raspberry PI. Ergänzend wurden die Positionen der Komponenten im Gehäuse wurde mit Hilfe von CAD-Software geprüft. Danach wurden die oben genannten Bleche erstellt und die Komponente mit Verschraubungen platziert. Für die Bleche hatte das bestehende Gehäuse bereits Verschraubungen, die verwendet werden konnten. Das CAD-Modell des Gehäuses mit den Komponenten sind im Anhang im Kapitel \ref{chptr:_cad_gehäuse} aus verschiedenen Perspektiven gezeigt.
 
-\clearpage
 \subsection{Konstruktion des Gehäuses}
 Wie im vorherigen Kapitel angedeutet, war das Gehäuse bereits vorhanden. Die oben aufgelisteten Komponenten wurden auf zusätzlichen Blechen montiert, in die Gewindelöcher eingebracht wurden. Durch die konvexe Form der Seiten des Gehäuses entstand im Inneren des Kontrollers auf diesen Blechen mehr Fläche für die Komponenten. Dies vereinfachte die Montage. Zusätzlich mussten noch die Zugänge für die Verkabelung der Stromversorgung, deren Schalter und das Kabel für die Ansteuerung der Komponenten im Laser-Aufbau angepasst werden. Dafür wurden sämtliche Löcher für spätere Erweiterungen beibehalten. Auf der Abb. \ref{fig:controller_free} ist die Front des Kontrollers zu sehen, in der Mitte die Touch-Anzeige für die Bedienung der Steuerung. Alle oben genannten Komponenten befinden sich in der Steuerung.
 
 \begin{figure}[H]
     \centering
     \includegraphics[scale=0.08]{98_images/IMG_6193_freigestellt.png}
-    \caption{Die abgeschlossene Steuerung.}
+    \caption{Front der abgeschlossenen Steuerung.}
     \label{fig:controller_free}
 \end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.08]{98_images/IMG_6193_freigestellt.png}
+    \caption{Rückseite der abgeschlossenen Steuerung.}
+    \label{fig:controller_free}
+\end{figure}
+
+\clearpage

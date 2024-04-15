@@ -21,9 +21,9 @@ In der Abb. \ref{fig:architecture} ist die Architektur der Software gezeigt. Es 
     \label{fig:architecture}
 \end{figure}
 
-\subsubsection{Das Producer-Consumer Design-Pattern}
+\subsubsection{Das Producer-Consumer-Design-Pattern}
 \label{section:_producer_consumer}
-Die Bereitstellung der Daten der TECs und des Diodentreibers sind nach dem \textit{Producer} \textit{Consumer}-Design-Pattern aufgebaut. Das System besteht aus einem Teilnehmer, der Daten zur Verfügung stellt und einem oder mehreren Teilnehmern, die diese Daten beziehen. Die Daten werden vom \textit{Producer}, dem Datenproduzent in eine Liste, die sogenannte \textit{Queue}, geschrieben, und von da vom \textit{Consumer}, dem Datenbezüger, ausgelesen. Das Schreiben und Lesen der Daten in der \textit{Queue} folgt nach dem \textit{First-in First-out}-Prinzip, die Daten, die zuerst in die \textit{Queue} geschrieben werden, werden auch zuerst bezogen. Wird ein Datenpunkt aus der \textit{Queue} bezogen, wird dieser im selben Moment aus der \textit{Queue} gelöscht. Dies funktioniert stabil, auch wenn mit einem oder mehreren \textit{Threads} gearbeitet wird. $[3]$
+Die Bereitstellung der Daten der TECs und des Diodentreibers sind nach dem \textit{Producer} \textit{Consumer}-Design-Pattern aufgebaut. Das System besteht aus einem Teilnehmer, der Daten zur Verfügung stellt und einem oder mehreren Teilnehmern, die diese Daten beziehen. Die Daten werden vom \textit{Producer}, dem Datenproduzent in eine Liste, die sogenannte \textit{Queue}, geschrieben, und von da vom \textit{Consumer}, dem Datenbezüger, ausgelesen. Das Schreiben und Lesen der Daten in der \textit{Queue} folgt nach dem \textit{First-In First-Out}-Prinzip, die Daten, die zuerst in die \textit{Queue} geschrieben werden, werden auch zuerst bezogen. Wird ein Datenpunkt aus der \textit{Queue} bezogen, wird dieser im selben Moment aus der \textit{Queue} gelöscht. Dies funktioniert stabil, auch wenn mit \textit{Multithreading} gearbeitet wird. $[3]$
 
 Der Datentransfer der vorliegenden Steuerung musste zuverlässig sein. Aus diesem Grund wurde das \textit{Producer-Consumer}-Entwurfsmuster verwendet, auf welches im Abschnitt \ref{lab_software_architecture}  \textit{Softwarearchitektur} eingegangen wurde.
 
@@ -36,8 +36,6 @@ Der Datentransfer der vorliegenden Steuerung musste zuverlässig sein. Aus diese
 
 \subsection{Systemkontextmodell}
 Das Systemkontextmodell ist ein abstraktes Modell, das die anderen Systeme in der Umgebung und die Systemgrenzen beschreibt. Es hilft dabei zu lokalisieren, welche Funktionen ein System benötigt. Das Systemkontextmodell des Kontrollers ist in Abb. \ref{fig:systemkontextmodell} ersichtlich. $[2]$ Der Diodentreiber auf der linken Seite ist in gestrichelter Ansicht dargestellt, weil dieser eigentlich nicht direkt mit dem Rechner kommuniziert. Trotzdem wurde dieser für das allgemeine Verständnis in das Schema einbezogen. Die Variablen \textit{n} und \textit{m} sollen signalisieren, dass je nach Grösse des Systems beliebig viele Diodentreiber bzw. TEC-Kontroller an das System angeschlossen werden können.
-
-% \textbf{Architektur beschreiben.}
 
 \begin{figure}[H]
     \centering
@@ -93,27 +91,26 @@ Der \textit{Primary-Key} der .csv-Datei ist als Unix Zeitstempel dargestellt und
 \subsection{Backend}
 \label{chptr:software_backend}
 Das \textit{Backend} umfasst in der Softwareentwicklung alle Programmiertätigkeiten, die die Logik in einer Software ausmachen. So werden Kommunikation zu Kontrollern aufgebaut, Daten in Datenbanken gespeichert und Daten ans Frontend gesendet und auch von da bezogen.
+Prinzipschemas sind in Abb. \ref{fig:dataflow_1} und \ref{fig:dataflow_2} gezeigt. Auf den Quellcode wird nicht eingegangen, bei Interesse kann dieser im Anhang unter dem Abschnitt \ref{main_src} nachgelesen werden.
 
-Die Ansteuerung des Diodentreibers wurde, wie weiter oben beschrieben mit einem analogen Signal realisiert. Dazu musste auf der SPS ein analoger Ausgang gesteuert werden.
-
-% Ansteuerung der TECs? - Über die API von Meerstetter wo bereits erwähnt?
-Schemata sind in Abb. \ref{fig:dataflow_1} und \ref{fig:dataflow_2} gezeigt. Auf den Quellcode wird nicht eingegangen, bei Interesse kann dieser im Anhang unter dem Abschnitt \ref{main_src} nachgelesen werden.
-Die Evaluierung der Prozesswert, wie die Temperaturen der Diode und des Kristalls als auch die Leistung der Pumpdiode werden in \textit{Echtzeit} angezeigt.
+Die Evaluierung der Prozesswert, wie die Temperaturen der Diode und des Kristalls, als auch die Leistung der Pumpdiode werden in \textit{Echtzeit} angezeigt.
 Die Temperaturen beider Komponenten werden direkt vom TEC-Kontroller ausgewertet und können durch einen Befehl angefordert werden.
-Die Leistung des Diodentreibers wird über ein analoges Signal ermittelt. Dieses wird auf der SPS bezogen und in der Steuerung ausgewertet. Wie weiter oben bereits erwähnt, ist dies nicht die elektrische, sondern die optische Leistung. Diese wird über eine Umrechnungstabelle ermittelt, welche in der Software hinterlegt ist. Je nach Konfiguration des Laseraufbaus, kann diese angepasst werden, die Werte werden über eine Funktion evaluiert.
-Der Eingang bzw. die Spannung am analogen Eingang ist linear und wurde so in die Software übernommen.
+Die Ansteuerung des Diodentreibers wurde, wie weiter oben beschrieben mit einem analogen Signal realisiert. Dazu musste auf der SPS ein analoger Ausgang gesteuert werden. Der Strom, der in den Diodentreiber gespeist wird, kann über einen anderen analogen Ausgang des Diodentreibers gemessen bzw. gelesen werden. Dieses Signal ist skaliert, es liegt also nicht die volle Leistung des Diodentreibers an diesem Ausgang an. Die SPS ist auch an diesen Ausgang angeschlossen, von ihr kann ein konvertiertes Signal vom Hauptrechner ausgelesen und ausgewertet werden. Die Leistung des Diodentreibers wird über dieses Signal ausgewertet. Wie weiter oben bereits erwähnt, ist dies nicht die elektrische, sondern die optische Leistung. Diese wird über eine Umrechnungstabelle ermittelt, welche in der Software hinterlegt ist. Je nach Konfiguration des Laseraufbaus, kann diese angepasst werden, die Werte werden über eine Funktion evaluiert.
+Der Eingang bzw. die Spannung am analogen Eingang ist linear und wurde so in die Software übernommen. Die Trendlinie ist in der Abb. \ref{fig:trendlinie} zu sehen. Der Knick am oberen Ende entsteht, weil der Stromfluss des Diodentreibers abgeriegelt ist und nicht mehr weiter steigen kann.
 
 \begin{figure}[H]
     \centering
     \includegraphics[scale=0.5]{98_images/analog_eingang_trendline.png}
     \caption{Trendlinie des analogen Eingangs.}
-    \label{fig:enter-label}
+    \label{fig:trendlinie}
 \end{figure}
+
 \subsection{Frontend}
 Das \textit{Frontend} umfasst alle Bereiche, die mit der Benutzeroberfläche (GUI) zu tun haben. So beinhaltet dies das Framework, mit dem das Design der GUI entwickelt worden ist und deren Benutzerführung. 
 Die GUI soll alle benötigten und wichtigen Werte anzeigen und einzustellende Werte einlesen. Darunter ist die Anzeige der Temperaturen des Kristalls und der Pumpdiode im Bereich der Zieltemperaturen zu halten. Bei Notwendigkeit können die Solltemperaturen beider TECs geändert werden. Daneben besteht auch die Möglichkeit, den Nennstrom der Pumpdiode zu ändern. Neben den notwendigen angezeigten Werten werden auch Werte zur Überwachung des Prozesses angezeigt. Um die Temperatur des Gehäuses zu überwachen, wird die Temperaturmessung des Prozessors des Raspberry PIs verwendet. Mit dieser kann auf die Temperatur im Gehäuse der Steuerung geschlossen werden. Um den Anforderungen gerecht zu werden, wurden verschiedene Ansätze verfolgt, die im Folgenden beschrieben werden. Dazu wurden teils Pro und Kontra-Vergleiche zur Hilfe gezogen.\\
 
-Die Objektorientierung wurde verwendet, wo dies möglich gewesen ist. Für die Erzeugung der Objekte wie Knöpfe, Rahmen oder Texten war dies nicht möglich, auch wenn dies optimal gewesen wäre. Die Objekte wurden zwar erstellt, die Werte aktualisierten sich jedoch nicht. Die gesamte Anzeige ist somit in einer Initialisierungs-Funktion realisiert, die Funktion ist vollständig gegeben, dies entspricht jedoch nicht der gängigen guten Softwarepraxis. Die Übersicht bei einer Revision des Quellcodes ist somit erschwert. Ersichtlich ist dies im Quellcode im Anhang im Kapitel \ref{main_src}. Zeilen 23 bis 771 sind die Initial-Funktion
+Alle Objekte, die auf der Digitalanzeige zu sehen sind, wurden über die Objektorientierung erzeugt. Die Übersicht und das Bearbeiten des Quell-Codes wurde so massiv vereinfacht. Dafür wurden für die Verschiedenen Objekte wie den Druckknöpfe, den Rahmen und Texten sogenannte Klassen, \textit{class} erstellt. Diese fungieren als \textit{Blueprint} oder als Vorlage für das Layout dieses bestimmten Objektes. Sämtliche Parameter zum erzeugen des Objekts werden dann in dieser Klasse an alle gleichen bis ähnlichen Objekten angewandt. Das Erzeugen aller Objekte wird dann über diese eine Klasse gemacht.
+% Die Objektorientierung wurde verwendet, wo dies möglich gewesen ist. Für die Erzeugung der Objekte wie Knöpfe, Rahmen oder Texten war dies nicht möglich, auch wenn dies optimal gewesen wäre. Die Objekte wurden zwar erstellt, die Werte aktualisierten sich jedoch nicht. Die gesamte Anzeige ist somit in einer Initialisierungs-Funktion realisiert, die Funktion ist vollständig gegeben, dies entspricht jedoch nicht der gängigen guten Softwarepraxis. Die Übersicht bei einer Revision des Quellcodes ist somit erschwert. Ersichtlich ist dies im Quellcode im Anhang im Kapitel \ref{main_src}. Zeilen 23 bis 771 sind die Initial-Funktion
 
 \subsubsection{Evaluierung des Frameworks}
 Für die Realisierung der Benutzeroberfläche musste das Framework evaluiert werden, mit der die Benutzeroberfläche erzeugt werden soll. Dafür werden die Frameworks \textit{Flask}, \textit{Tkinter} oder \textit{CustomTkinter}, eine Erweiterung von \textit{Tkinter} der Programmiersprache Python benutzt/verwendet. Dazu standen die Optionen Web-basiert oder eine Applikation zur Verfügung. Beide Optionen laufen lokal auf dem Rechner (Raspberry PI 3B+), dabei steht die Leistung des Rechners und die Handhabung der Oberfläche im Vordergrund. Die vom TEC-Kontroller ausgelesenen Werte, werden im Sekundentakt an den Rechner gesendet und müssen innerhalb dieser Sekunde ausgewertet werden können. Die Bedienung darf aus diesem Grund nicht zu viele Ressourcen des Rechners aufwenden. Dies konnte im Programm mit einer \textit{Queue} abgefangen werden. Dazu ist es wünschenswert, wenn die Benutzeroberfläche zur einfacheren Handhabung die gesamte Anzeige ausfüllt. Folgend werden die dafür bzw. dagegen sprechenden Argumente aufgelistet.
