@@ -10,34 +10,26 @@ from pixtendv2l import PiXtendV2L
 
 class ldd_control:
     """
-    Class to control the whole behavior of the PiXtend PLC. Get and set
+    Class to control the behavior of the PiXtend PLC. Get and set
     information and parameters.
     """
     def __init__(self):
-        # Initialization of misc. variables
         self.laser_start_bit: bool = 0
         self.ldd_current_sp: float = 0.1
         self.bit_keeper: int = 0
-        self.case_dict: dict = {
-            "100": "Diode current above 1.5A",
-            "101": "Diode current below 0A",
-            "102": "Laser running...",
-            "103": "Laser Ready...",
-            "104": "Laser Ramping-Up",
-        }
 
-        # Read the curernt2power table once. The whole path is needed as
-        # automatic start would not recognize the file location.
         self.c2p = pd.read_csv(
-            "/home/pi/Desktop/folder_bak_edit/ldd_current2power.csv"
-        ).to_numpy()  # Directly convert the table into an numpy array
+            "/home/pi/Desktop/folder_bak_edit_oop/ldd_current2power.csv"
+        ).to_numpy()
 
-        # Initialization of the PLC (PiXtend)
+        self.a2c = pd.read_csv(
+            "/home/pi/Desktop/folder_bak_edit_oop/ldd_ang2current.csv"
+        ).to_numpy()
+
         self.p = PiXtendV2L()
         if self.p != PiXtendV2L():
             self.p = PiXtendV2L()
 
-    # configuration of the setpoint (sp) of the LDD Current
     def ldd_get_sp(self):
         """
         Return the setpoint of the setting the user has choosen on the
@@ -49,14 +41,14 @@ class ldd_control:
         """
         Increase the current setpoint by 0.1A
         """
-        self.ldd_current_sp += 0.1
+        self.ldd_current_sp += 0.01
 
     def ldd_sp_decrease(self):
         """
         Decrease the current setpoint by 0.1A
         """
         if self.ldd_current_sp >= 0.1:
-            self.ldd_current_sp -= 0.1
+            self.ldd_current_sp -= 0.01
 
     def interpol(
         self,
@@ -69,11 +61,10 @@ class ldd_control:
         A non-general inear interpolation of values taking four values.
         This interpolation works for values with a lower bound at 0.
         """
-        return (down_right-up_right)/(down_left-up_left)* \
-            (actual_value-up_left)+down_left
+        return ((down_right-up_right)/(down_left-up_left))* \
+            (actual_value-up_left)+up_right
 
-    # Configuration of the actual value of the laser
-    def ldd_get_av(self):
+    def ldd_get_w(self):
         """
         Try to get the current information from the PiXtend PLC.
         "try" method is in place if an abortion/error occures in the
@@ -84,25 +75,25 @@ class ldd_control:
         the table must be named "ldd_current2power.csv" otherwise error.
         """
         try:
-            # ldd_current = self.p.analog_in0  # For the act. current in
-            ldd_current = 0.125  # Dummy variable
-            array_y, array_x = np.where(self.c2p <= ldd_current)
-            # print(self.c2p[array_y[-1]:array_y[-1]+1, array_x[-1]:array_x[-1]+1])
-            up_left = self.c2p[array_y[-1], array_x[-1]]
-            up_right = self.c2p[array_y[-1], array_x[-1]+1]
-            down_left = self.c2p[array_y[-1]+1, array_x[-1]]
-            down_right = self.c2p[array_y[-1]+1, array_x[-1]+1]
+            _ldd_current = self.p.analog_in0
 
-            opt_power_av = self.interpol(
-                up_left,
-                up_right,
-                down_left,
-                down_right,
-                ldd_current
-            )
-            
-            return opt_power_av
-            # return self.c2p[array_y[-1], array_x[-1]+1]
+            if _ldd_current == 0:
+                return 0
+            else:
+                y, x = np.where(self.c2p <= _ldd_current)
+                _up_left = self.c2p[y[-1], x[-1]]
+                _up_right = self.c2p[y[-1], x[-1]+1]
+                _down_left = self.c2p[y[-1]+1, x[-1]]
+                _down_right = self.c2p[y[-1]+1, x[-1]+1]
+
+                _opt_power_av = self.interpol(
+                    _up_left,
+                    _up_right,
+                    _down_left,
+                    _down_right,
+                    _ldd_current
+                )
+                return _opt_power_av
 
         except(
             IOError,
@@ -110,27 +101,60 @@ class ldd_control:
             RuntimeError,
             KeyboardInterrupt
         ):
-            print("Error Handler Active")
             self.p.close()
             time.sleep(1)
             del self.p
             self.p = None
 
-    def A_limit(self):  # , case: str
+    def ldd_current_av(self):
+        try:
+            _ldd_current = self.p.analog_in0
+
+            if _ldd_current == 0:
+                return 0
+            else:
+                y, x = np.where(self.a2c <= _ldd_current)
+                _up_left = self.a2c[y[-1], x[-1]]
+                _up_right = self.a2c[y[-1], x[-1]+1]
+                _down_left = self.a2c[y[-1]+1, x[-1]]
+                _down_right = self.a2c[y[-1]+1, x[-1]+1]
+
+                _ldd_current_av = self.interpol(
+                    _up_left,
+                    _up_right,
+                    _down_left,
+                    _down_right,
+                    _ldd_current
+                )
+
+                return float(_ldd_current_av )
+
+        except(
+            IOError,
+            ValueError,
+            RuntimeError,
+            KeyboardInterrupt
+        ):
+            self.p.close()
+            time.sleep(1)
+            del self.p
+            self.p = None
+
+
+    def A_limit(self):
         """
         Check if the limit of the current/voltage has not been exeeded.
         Status on the overview window.
         """
-        if round(self.ldd_current_sp, 3) > 1.5:
-            return "Diode current above 1.5A", False  # Case 100
+        if round(self.ldd_current_sp, 3) > 0.8:
+            return "Diode current above 0.8A", False
         elif round(self.ldd_current_sp) < 0:
-            return "User input too low", False  # Case 101
-        elif round(self.ldd_get_av()) > 0 and self.laser_start_bit == 1:
-            return "Laser running...", True  # Case 102
+            return "User input too low", False
+        elif round(self.ldd_current_av(), 3) > 0:
+            return "Laser running...", True
         else:
-            return "Laser Ready...", True  # Case 103
+            return "Laser ready...", True
 
-    # Configuration of laser ignition prerequisites current / voltage
     def A_ramper(self):
         """
         Method to ramp the laser output if it already has started and
@@ -148,7 +172,6 @@ class ldd_control:
         """
         return 511 / 1.5 * self.ldd_current_sp
 
-    # Configurations of start / stop the laser depending on the 
     def laser_start(self):
         """
         Laser ignition / start -> Depending on the prerequesites of the
@@ -156,9 +179,9 @@ class ldd_control:
         """
         if self.A_limit()[1]:
             try:
-                # self.p.set_dac_output(
-                #         self.p.DAC_B, 1023
-                # )
+                self.p.set_dac_output(
+                        self.p.DAC_B, 1023
+                )
                 for ramps in np.linspace(
                     self.bit_keeper,
                     self.A_bits(),
@@ -169,11 +192,8 @@ class ldd_control:
                         self.p.DAC_A, int(ramps)
                     )
                     self.bit_keeper = self.A_bits()
-                    # print(int(ramps), self.A_bits())
                     time.sleep(0.25)
                 self.laser_start_bit = 1
-                print(self.laser_start_bit)
-                    
 
             except(
                     IOError,
@@ -181,7 +201,6 @@ class ldd_control:
                     RuntimeError,
                     KeyboardInterrupt
             ):
-                    print("Error Handler Active")
                     self.p.close()
                     time.sleep(0.5)
                     del self.p
@@ -194,12 +213,11 @@ class ldd_control:
         """
         if self.A_bits() != 0:
             try:
-                # self.p.set_dac_output(
-                #         self.p.DAC_B, 0
-                # )
+                self.p.set_dac_output(
+                        self.p.DAC_B, 0
+                )
                 for ramps in np.linspace(
                     self.bit_keeper,
-                    # self.A_bits(),
                     0,
                     num=10,
                     endpoint=True
@@ -207,10 +225,8 @@ class ldd_control:
                     self.current = self.p.set_dac_output(
                         self.p.DAC_A, int(ramps)
                     )
-                    # print(ramps)
                     time.sleep(0.25)
                 self.laser_start_bit = 0
-                print(self.laser_start_bit)                    
 
             except(
                     IOError,
@@ -218,31 +234,24 @@ class ldd_control:
                     RuntimeError,
                     KeyboardInterrupt
             ):
-                print("Error Handler Active")
                 self.p.close()
                 time.sleep(0.5)
                 del self.p
                 self.p = None
 
     def ldd_test(self):
-        print(self.p)
         if self.p is not None:
-            # Set some variables needed in the main loop
             is_config = False
             cycle_counter = 0
             while True:
                 try:
-                    # Check if SPI communication is running and the re-
-                    # ceived data is correct
-                    if self.p.crc_header_in_error is False and self.p.crc_data_in_error is False:
+                    if self.p.crc_header_in_error is False \
+                    and self.p.crc_data_in_error is False:
                         cycle_counter += 1
                         if not is_config:
                             is_config = True
                             self.p.relay0 = self.p.ON
                             self.p.digital_out0 = self.p.ON
-                        # Toggle the relays and digital outputs on and off
-                        # self.p.relay0 = not self.p.relay0
-                        # self.p.digital_out0 = not self.p.digital_out0
                     else:
                         self.p.relay0 = self.p.OFF
                         self.p.digital_out0 = self.p.OFF
@@ -252,14 +261,12 @@ class ldd_control:
                         self.p = None
                         break
 
-                # Catch errors and if an error is caught, leave the program
                 except(
                     IOError,
                     ValueError,
                     RuntimeError,
                     KeyboardInterrupt
                 ):
-                    print("Error Handler Active")
                     self.p.close()
                     time.sleep(1)
                     del self.p
@@ -268,16 +275,7 @@ class ldd_control:
 
 
 if __name__ == "__main__":
-    from gui_custom import GUI
-    import threading
-
-    # Initialising the GUI
-    app = GUI()
-    
-    # Initiating the thread to the main thread
-    threaded_task = threading.Thread(target=app.update_gui,
-            daemon=True
-    ).start()
-
-    # Starting the mainloop of the GUI
-    app.mainloop()
+    """
+    Arbitrary testing sequences
+    """
+    print(ldd_control())

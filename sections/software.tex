@@ -100,7 +100,7 @@ Der Eingang bzw. die Spannung am analogen Eingang ist linear und wurde so in die
 
 \begin{figure}[H]
     \centering
-    \includegraphics[scale=0.5]{98_images/analog_eingang_trendline.png}
+    \includegraphics[scale=0.65]{98_images/analog_2_current_graph.PNG}
     \caption{Trendlinie des analogen Eingangs.}
     \label{fig:trendlinie}
 \end{figure}
@@ -109,8 +109,7 @@ Der Eingang bzw. die Spannung am analogen Eingang ist linear und wurde so in die
 Das \textit{Frontend} umfasst alle Bereiche, die mit der Benutzeroberfläche (GUI) zu tun haben. So beinhaltet dies das Framework, mit dem das Design der GUI entwickelt worden ist und deren Benutzerführung. 
 Die GUI soll alle benötigten und wichtigen Werte anzeigen und einzustellende Werte einlesen. Darunter ist die Anzeige der Temperaturen des Kristalls und der Pumpdiode im Bereich der Zieltemperaturen zu halten. Bei Notwendigkeit können die Solltemperaturen beider TECs geändert werden. Daneben besteht auch die Möglichkeit, den Nennstrom der Pumpdiode zu ändern. Neben den notwendigen angezeigten Werten werden auch Werte zur Überwachung des Prozesses angezeigt. Um die Temperatur des Gehäuses zu überwachen, wird die Temperaturmessung des Prozessors des Raspberry PIs verwendet. Mit dieser kann auf die Temperatur im Gehäuse der Steuerung geschlossen werden. Um den Anforderungen gerecht zu werden, wurden verschiedene Ansätze verfolgt, die im Folgenden beschrieben werden. Dazu wurden teils Pro und Kontra-Vergleiche zur Hilfe gezogen.\\
 
-Alle Objekte, die auf der Digitalanzeige zu sehen sind, wurden über die Objektorientierung erzeugt. Die Übersicht und das Bearbeiten des Quell-Codes wurde so massiv vereinfacht. Dafür wurden für die Verschiedenen Objekte wie den Druckknöpfe, den Rahmen und Texten sogenannte Klassen, \textit{class} erstellt. Diese fungieren als \textit{Blueprint} oder als Vorlage für das Layout dieses bestimmten Objektes. Sämtliche Parameter zum erzeugen des Objekts werden dann in dieser Klasse an alle gleichen bis ähnlichen Objekten angewandt. Das Erzeugen aller Objekte wird dann über diese eine Klasse gemacht.
-% Die Objektorientierung wurde verwendet, wo dies möglich gewesen ist. Für die Erzeugung der Objekte wie Knöpfe, Rahmen oder Texten war dies nicht möglich, auch wenn dies optimal gewesen wäre. Die Objekte wurden zwar erstellt, die Werte aktualisierten sich jedoch nicht. Die gesamte Anzeige ist somit in einer Initialisierungs-Funktion realisiert, die Funktion ist vollständig gegeben, dies entspricht jedoch nicht der gängigen guten Softwarepraxis. Die Übersicht bei einer Revision des Quellcodes ist somit erschwert. Ersichtlich ist dies im Quellcode im Anhang im Kapitel \ref{main_src}. Zeilen 23 bis 771 sind die Initial-Funktion
+Alle Objekte, die auf der Digitalanzeige zu sehen sind, wurden über die Objektorientierung erzeugt. Die Übersicht und das Bearbeiten des Quell-Codes wurde so massiv vereinfacht. Dafür wurden für die Verschiedenen Objekte wie den Druckknöpfe, den Rahmen und Texten sogenannte Klassen, \textit{class} erstellt. Diese fungieren als \textit{Blueprint} oder als Vorlage für das Layout dieses bestimmten Objektes. Sämtliche Parameter zum erzeugen des Objekts werden dann in dieser Klasse an alle gleichen bis ähnlichen Objekten angewandt. Das Erzeugen aller Objekte wird dann über diese eine Klasse ausgeführt.
 
 \subsubsection{Evaluierung des Frameworks}
 Für die Realisierung der Benutzeroberfläche musste das Framework evaluiert werden, mit der die Benutzeroberfläche erzeugt werden soll. Dafür werden die Frameworks \textit{Flask}, \textit{Tkinter} oder \textit{CustomTkinter}, eine Erweiterung von \textit{Tkinter} der Programmiersprache Python benutzt/verwendet. Dazu standen die Optionen Web-basiert oder eine Applikation zur Verfügung. Beide Optionen laufen lokal auf dem Rechner (Raspberry PI 3B+), dabei steht die Leistung des Rechners und die Handhabung der Oberfläche im Vordergrund. Die vom TEC-Kontroller ausgelesenen Werte, werden im Sekundentakt an den Rechner gesendet und müssen innerhalb dieser Sekunde ausgewertet werden können. Die Bedienung darf aus diesem Grund nicht zu viele Ressourcen des Rechners aufwenden. Dies konnte im Programm mit einer \textit{Queue} abgefangen werden. Dazu ist es wünschenswert, wenn die Benutzeroberfläche zur einfacheren Handhabung die gesamte Anzeige ausfüllt. Folgend werden die dafür bzw. dagegen sprechenden Argumente aufgelistet.
@@ -137,20 +136,24 @@ Neben dem oben genannten Framework wurden auch Bibliotheken von Drittanbietern, 
 Aus den Gründen der Erfahrung und der Anwendbarkeit mit Tkinter, fiel die Entscheidung auf die App-Variante. Zusätzlich konnten mit dem \textit{CustomTkinter} Framework modernere Designs kreiert werden. Dies soll die Nutzung der Oberfläche vereinfachen. Es können somit ergonomische und ansprechende Designs realisiert werden.
 
 \subsubsection{Aufbau der Digitalanzeigen}
-Die Anzeigen sehen wie in den folgenden Abb. \ref{fig:overview_sw} und \ref{fig:settings_sw} gezeigt aus. Die gesamte Anwendung wird im Vollbildschirm-Modus beim Hochfahren des Rechners automatisch gestartet. Die englische Sprache für die Steuerung wurde gewählt, weil damit die Nutzergruppe grösser ist.\\
-Abb. \ref{fig:overview_sw} zeigt einen Überblick der Komponenten, der zugleich der Startbildschirm der Steuerung ist. Auf diesem werden alle wichtigen Parameter auf einen Blick angezeigt und können auch da eingestellt werden. Um die Benutzerführung zu vereinfachen, ist das Design in verschiedene Abschnitte unterteilt. Ersichtlich sind am oberen Rand zwei Schaltflächen, mit denen zwischen den zwei Anzeigen \textit{Overview} und \textit{Settings} gewechselt kann.
-wurden Rahmen um die jeweiligen Steuereinheiten gelegt, damit klar ist, wo ein bestimmtes Element dazu gehört. Zusätzlich ist die Anzeige in die Steuerung der TECs (auf der linken Hälfte) und die Pumpdiodentreiber (auf der rechten Hälfte) unterteilt, wobei die beiden TECs wiederum in den TEC des Kristalls und der Pumpdiode unterteilt wurden.\\
+Die Anzeigen sehen wie in den folgenden Abb. \ref{fig:overview_sw} und \ref{fig:settings_sw} gezeigt aus. Die gesamte Anwendung wird im Vollbildschirm-Modus beim Hochfahren des Rechners automatisch gestartet. Die englische Sprache für die Steuerung wurde gewählt, weil damit eine breitere Nutzergruppe erreichbar ist.\\
+Abb. \ref{fig:overview_sw} zeigt einen Überblick der Komponenten, der zugleich der Startbildschirm der Steuerung ist. Auf diesem werden alle wichtigen Parameter auf einen Blick angezeigt und können auch da eingestellt werden. Um die Benutzerführung zu vereinfachen, ist das Design in verschiedene Abschnitte unterteilt.
+Es wurden Rahmen um die jeweiligen Steuereinheiten gelegt, damit klar ist, wo ein bestimmtes Element dazu gehört. Zusätzlich ist die Anzeige in die Steuerung der TECs (auf der linken Hälfte) und die Pumpdiodentreiber (auf der rechten Hälfte) unterteilt, wobei die beiden TECs wiederum in den TEC des Kristalls und der Pumpdiode unterteilt wurden.\\
 Angezeigt werden die aktuellen Werte, \textit{Acutal Value}, der TECs, als auch der Strom des Diodentreibers. Die Werte stellen den Effektiven Wert am Ausgang an. Der Leistungswert der Pumpdiode jedoch ist die optische und nicht die elektrische Leistung. Dafür ist im Hintergrund eine Tabelle, die die elektrische ind die optische Leistung konvertiert.
-Bei allen dreien lassen sich die Sollwerte, \textit{Setpoint}, der Temperaturen bzw. des Stromes mit den <<$+$>> und <<$-$>> Knöpfen hinter den Sollwerten erhöhen bzw. vermindern.
-Der Schieberegler dient als Barriere zur Sicherheit, dass der Laser nicht bei unbeabsichtigtem Betätigen des Startknopfes den Laser startet. Bei Betätigen des \textit{Laser-STOP}-Knopfes, kann der Laser zu jeder Zeit beendet werden. Gleich darunter befindet sich eine Statusanzeige für den Betrieb des Lasers. Folgende Texte werden je nach Status des Betriebes des Lasers angezeigt.
+Bei allen dreien lassen sich die Sollwerte, \textit{Setpoint}, der Temperaturen bzw. des Stromes mit den <<$+$>> und <<$-$>> Knöpfen hinter den Sollwerten erhöhen bzw. vermindern. Die Temperaturen für die TECs können jeweils um 0.2°C/Stufe bzw. 0.01A/Stufe für die Pumpdiode angepasst werden.
+Der "Laser-Enable"-Knopf dient als Barriere zur Sicherheit, dass der Laser bei unbeabsichtigtem Betätigen des Startknopfes nicht startet. Bei Betätigen des \textit{Laser-STOP}-Knopfes, kann der Laser zu jeder Zeit beendet werden. Gleich darunter befindet sich eine Statusanzeige für den Betrieb des Lasers. Beim Betätigen des Start- bzw. Stop-Tasters, wird der Strom gerampt in die Pumpdiode eingespeist.\\
 
+Der grüne Hintergrund der Temperaturmonitore, zeigen jeweils an, ob die Temperaturannäherung der Diode bzw. des Kristalls stabil ist. Wechseln die Temperaturmonitore auf die Farbe rot, so ist der TEC-Kontroller in einem Fehler und regelt die Temperaturen nicht mehr sachgemäss. Die Steuerung muss dann heruntergefahren und mit dem Hauptschalter auf der Rückseite neu gestartet werden.
+Zusätzlich sind am oberen Rand zwei Schaltflächen ersichtlich, mit denen zwischen den zwei Anzeigen \textit{Overview} und \textit{Settings} gewechselt werden kann.
 
 \begin{figure}[H]
     \centering
-    \includegraphics[scale=0.3, trim={1mm 1mm 1mm 1mm}, clip]{98_images/window_overview_large_04.PNG}
+    \includegraphics[scale=0.3, trim={1mm 1mm 1mm 1mm}, clip]{98_images/overview_window_large_02.PNG}
     \caption{Die Hauptseite \textit{Overview} der Steuerung}
     \label{fig:overview_sw}
 \end{figure}
+
+Folgende Texte werden je nach Status des Betriebes des Lasers angezeigt.
 
 \begin{table}[H]
     \centering
@@ -173,7 +176,7 @@ Abb. \ref{fig:settings_sw} zeigt verschiedene Parameter und Anwendungen. Um nebe
 
 \begin{figure}[H]
     \centering
-    \includegraphics[scale=0.3, trim={1mm 1mm 1mm 2mm}, clip]{98_images/window_settings_large_02.PNG}
+    \includegraphics[scale=0.3, trim={1mm 1mm 1mm 2mm}, clip]{98_images/settings_window_large_02.PNG}
     \caption{Die Einstellungsseite \textit{Settings} der Steuerung}
     \label{fig:settings_sw}
 \end{figure}
@@ -186,13 +189,15 @@ Abb. \ref{fig:settings_sw} zeigt verschiedene Parameter und Anwendungen. Um nebe
          \textit{Export Data}&      Exportiert die Temperaturen der TECs und die Ströme des Dioden-\\
          &                          treibers in einer .csv-Datei. Primary-key ist dabei die Zeit, alle Ein-\\
          &                          träge werden somit anhand der Zeit sortiert.\\
+         % \textit{Import Data}&      Damit
          \textit{CPU Temperature}&  Anzeige für die Temperatur in der CPU des Rechners, diese sollte im\\
          &                          Bereich 40°C-65°C sein.\\
          \textit{Appearance Mode}&  Die gesamte Anzeige kann in einem hellen, als auch in einem dunkleren\\
          &                          Design erscheinen.\\
          \textit{Quit}&             Damit wird nur die Anwendung beendet und nicht der gesamten Rech-\\
          &                          ner heruntergefahren.\\
-         \textit{Shut down}&        Bei Betätigung wird der gesamte Rechner herunter gefahren.
+         \textit{Shut down}&        Bei Betätigung wird der gesamte Rechner herunter gefahren.\\
+         &                          Der Hauptschalter der Steuerung muss ausgeschaltet werden.
     \end{tabular}
     \caption{Beschreibung der Bedienung auf der \textit{Settings}-Anzeige}
     \label{tab:settings_beschriebung_sw}
